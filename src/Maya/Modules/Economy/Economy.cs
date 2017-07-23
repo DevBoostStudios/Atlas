@@ -4,10 +4,10 @@ using Discord.Commands;
 using Maya.Data;
 using LiteDB;
 
-namespace Maya.Modules
+namespace Maya.Modules.Economy
 {
     [Group("points")]
-    public class PointsModule : ModuleBase<SocketCommandContext>
+    public class Economy : ModuleBase<SocketCommandContext>
     {
         // This property will be filled in at runtime by the IoC container (Program.cs:49)
         public LiteDatabase Database { get; set; }

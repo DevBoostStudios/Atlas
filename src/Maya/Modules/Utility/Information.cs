@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace Maya.Modules
+namespace Maya.Modules.Administration
 {
-    public class InfoModule : ModuleBase<SocketCommandContext>
+    public class Information : ModuleBase<SocketCommandContext>
     {
         private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
         private static string HeapSize() => Math.Round(GC.GetTotalMemory(true) / (1024.0 * 1024.0), 2).ToString();
@@ -24,45 +22,50 @@ namespace Maya.Modules
                 {
                     author
                     .WithName("Maya")
-                    .WithUrl("https://discordapp.com")
-                    .WithIconUrl("https://cdn.discordapp.com/embed/avatars/0.png");
+                    .WithUrl("https://github.com/EthanChrisp/Maya")
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
                 })
                 .WithUrl("https://github.com/EthanChrisp/Maya")
                 .WithDescription("Fully-Featured C# Discord Bot")
-                .AddInlineField("Author", "@LackingAGoodName#4444")
-                .AddInlineField("Servers", "" + Context.Client.Guilds.Count + "")
-                .AddInlineField("Users", "456")
-                .AddInlineField("Uptime", "" + Uptime() + "")
-                .AddInlineField("Heap", "" + HeapSize() + "Mb")
+                .AddInlineField("Author", "<@!132693143173857281>" + "") // To Do: Get Client OwnerID
                 .AddInlineField("Library", "[Discord.Net 1.0.1](https://github.com/RogueException/Discord.Net)")
-                .AddInlineField("API", "v6")
+                .AddInlineField("Servers", Context.Client.Guilds.Count)
+                .AddInlineField("Uptime", Uptime())
+                .AddInlineField("Heap", HeapSize() + "MiB")
+                .AddInlineField("Latency", (Context.Client as DiscordSocketClient).Latency + "ms")
                 .WithFooter(footer =>
                 {
                     footer
-                    .WithText("Dank")
-                    .WithIconUrl("https://cdn.discordapp.com/embed/avatars/0.png");
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
                 });
             var embed = builder.Build();
-            await Context.Channel.SendMessageAsync("", false, embed)
+            await ReplyAsync("", false, embed)
                 .ConfigureAwait(false);
         }
 
+        [RequireOwner]
         [Command("ping")]
         [Summary("Display the Bot's current Round Trip Latency.")]
         public async Task Ping()
         {
             var builder = new EmbedBuilder()
-                .WithAuthor("Maya")
+                .WithAuthor(author =>
+                {
+                    author
+                    .WithName("Latency")
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                })
                 .WithColor(new Color(0xFF9800))
-                .AddField("Latency", "" + (Context.Client as DiscordSocketClient).Latency + "ms")
+                .AddField("RTT", "" + (Context.Client as DiscordSocketClient).Latency + "ms")
                 .WithFooter(footer =>
                 {
                     footer
-                    .WithText("Dank")
-                    .WithIconUrl("https://cdn.discordapp.com/embed/avatars/0.png");
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
                 });
             var embed = builder.Build();
-            await Context.Channel.SendMessageAsync("", false, embed)
+            await ReplyAsync("", false, embed)
                         .ConfigureAwait(false);
         }
     }
