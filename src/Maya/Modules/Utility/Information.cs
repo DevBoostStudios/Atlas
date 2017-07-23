@@ -27,12 +27,40 @@ namespace Maya.Modules.Administration
                 })
                 .WithUrl("https://github.com/EthanChrisp/Maya")
                 .WithDescription("Fully-Featured C# Discord Bot")
-                .AddInlineField("Author", "<@!132693143173857281>" + "") // To Do: Get Client OwnerID
+                .AddInlineField("Author", "<@!132693143173857281>") // To Do: Get Client OwnerID
                 .AddInlineField("Library", "[Discord.Net 1.0.1](https://github.com/RogueException/Discord.Net)")
                 .AddInlineField("Servers", Context.Client.Guilds.Count)
                 .AddInlineField("Uptime", Uptime())
                 .AddInlineField("Heap", HeapSize() + "MiB")
                 .AddInlineField("Latency", (Context.Client as DiscordSocketClient).Latency + "ms")
+                .WithFooter(footer =>
+                {
+                    footer
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
+                });
+            var embed = builder.Build();
+            await ReplyAsync("", false, embed)
+                .ConfigureAwait(false);
+        }
+
+        [Command("userinfo")]
+        [Summary("Return information on the specified User.")]
+        public async Task UserInfo(IUser user)
+        {
+            var builder = new EmbedBuilder()
+                .WithColor(new Color(7506394))
+                .WithAuthor(author =>
+                {
+                    author
+                    .WithName(user.Username + "#" + user.DiscriminatorValue)
+                    .WithIconUrl(user.GetAvatarUrl());
+                })
+                .AddInlineField("ID", user.Id)
+                .AddInlineField("Status", user.Status)
+                .AddInlineField("Joined Discord", user.CreatedAt)
+                .AddInlineField("Joined Server", "todo") // To Do: Finish UserInfo Logic
+                .WithThumbnailUrl(user.GetAvatarUrl())
                 .WithFooter(footer =>
                 {
                     footer
@@ -66,7 +94,7 @@ namespace Maya.Modules.Administration
                 });
             var embed = builder.Build();
             await ReplyAsync("", false, embed)
-                        .ConfigureAwait(false);
+                .ConfigureAwait(false);
         }
     }
 }

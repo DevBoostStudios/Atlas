@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Modules\Games\" />
     <Folder Include="Modules\Kronorium\" />
-    <Folder Include="Modules\Moderation\" />
     <Folder Include="Modules\Music\" />
     <Folder Include="Modules\Reddit\" />
   </ItemGroup>
