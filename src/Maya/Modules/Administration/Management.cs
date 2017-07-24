@@ -1,14 +1,16 @@
 ﻿using Discord;
 using Discord.Commands;
+using Maya.Modules.Audio;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Maya.Modules.Administration
 {
-    public class Administration : ModuleBase<SocketCommandContext>
+    public class Management : ModuleBase<SocketCommandContext>
     {
         private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
+        // private readonly AudioService _service;
 
         [RequireOwner]
         [Command("shutdown")]
@@ -34,6 +36,7 @@ namespace Maya.Modules.Administration
             await ReplyAsync("", false, embed)
                 .ConfigureAwait(false);
 
+            // await _service.LeaveAudio(Context.Guild); // To Do: LeaveAudio on all Guilds
             await Context.Client.SetStatusAsync(UserStatus.Invisible);
             await Task.Delay(1000);
             Environment.Exit(0);

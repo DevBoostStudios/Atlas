@@ -287,5 +287,6 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-# Sensitive Information
+# Sensitive Information & Temp Files
 src/Maya/config.json
+src/Maya/Data/Temp/Audio/*.*

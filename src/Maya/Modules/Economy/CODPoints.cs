@@ -7,7 +7,7 @@ using LiteDB;
 namespace Maya.Modules.Economy
 {
     [Group("points")]
-    public class Economy : ModuleBase<SocketCommandContext>
+    public class CODPoints : ModuleBase<SocketCommandContext>
     {
         // This property will be filled in at runtime by the IoC container (Program.cs:49)
         public LiteDatabase Database { get; set; }

@@ -8,6 +8,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Maya.Services;
 using LiteDB;
+using Maya.Modules.Audio;
 
 namespace Maya
 {
@@ -47,6 +48,7 @@ namespace Maya
                 // Extra
                 .AddSingleton(_config)
                 .AddSingleton(new LiteDatabase("bot.db"))
+                .AddSingleton(new AudioService())
                 // Add additional services here...
                 .BuildServiceProvider();
         }

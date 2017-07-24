@@ -20,9 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Temp\Audio\" />
     <Folder Include="Modules\Games\" />
     <Folder Include="Modules\Kronorium\" />
-    <Folder Include="Modules\Music\" />
+    <Folder Include="Modules\Video\" />
     <Folder Include="Modules\Reddit\" />
   </ItemGroup>
 
