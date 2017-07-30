@@ -3,45 +3,45 @@ using Discord;
 using Discord.Commands;
 using Maya.Data;
 using LiteDB;
+using System;
 
 namespace Maya.Modules.Economy
 {
-    [Group("points")]
+    [Group("balance")]
     public class CODPoints : ModuleBase<SocketCommandContext>
     {
-        // This property will be filled in at runtime by the IoC container (Program.cs:49)
+        // Property will be filled at runtime by the IoC container (Program.cs:49)
         public LiteDatabase Database { get; set; }
-
-        // Access the current user's points, under '!points' or '!points me'
-        [Command, Alias("me")]
-        public Task SelfAsync()
-            => SendPointsAsync(Context.User);
-
-        // Access another user's points, under '!points @user'
+        
         [Command]
+        [Summary("Access a user's CODPoints Balance.")]
         public Task UserAsync(IUser user)
-            => SendPointsAsync(user);
+            => SendCODPointsAsync(user);
 
-        private async Task SendPointsAsync(IUser user)
+        private async Task SendCODPointsAsync(IUser user)
         {
             var users = Database.GetCollection<User>("users");
             var model = users.FindOne(u => u.Id == user.Id);
+            var CODPoints = model?.Points ?? 0;
 
-            var points = model?.Points ?? 0;
-
-            var embed = new EmbedBuilder
-            {
-                Author = new EmbedAuthorBuilder
+            var builder = new EmbedBuilder()
+                .WithColor(new Color(5025616))
+                .WithAuthor(author =>
                 {
-                    Name = user.ToString(),
-                    IconUrl = user.GetAvatarUrl()
-                },
-                Color = new Color(0x346B82), // color of the day
-            };
-            embed.AddField("Points", points);
-            // Levels?
-
-            await ReplyAsync("", embed: embed);
+                    author
+                    .WithName(Context.User.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
+                })
+                .AddInlineField("Balance", CODPoints + "CP")
+                .WithFooter(footer =>
+                {
+                    footer
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
+                });
+            var embed = builder.Build();
+            await ReplyAsync("", false, embed)
+                .ConfigureAwait(false);
         }
     }
 }

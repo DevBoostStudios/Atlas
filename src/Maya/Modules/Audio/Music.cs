@@ -2,7 +2,6 @@
 using Discord;
 using Discord.Commands;
 using System;
-using System.Diagnostics;
 
 namespace Maya.Modules.Audio
 {

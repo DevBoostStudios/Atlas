@@ -42,14 +42,16 @@ namespace Maya
                 .AddSingleton(_client)
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
+
                 // Logging
                 .AddLogging()
                 .AddSingleton<LogService>()
+
                 // Extra
                 .AddSingleton(_config)
                 .AddSingleton(new LiteDatabase("bot.db"))
                 .AddSingleton(new AudioService())
-                // Add additional services here...
+
                 .BuildServiceProvider();
         }
 
