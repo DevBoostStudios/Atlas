@@ -10,7 +10,6 @@ namespace Maya.Modules.Audio
     public class AudioService
     {
         private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
-        public const string AudioPath = "Data/Temp/Audio";
 
         public async Task JoinAudio(IGuild guild, IVoiceChannel target)
         {
@@ -44,7 +43,6 @@ namespace Maya.Modules.Audio
 
         public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string path)
         {
-            // Get a full path to the file if the value of 'path' is only a filename
             if (!File.Exists(path))
             {
                 await channel.SendMessageAsync("Error: Invalid file specified.");

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using System;
+using System.Diagnostics;
 
 namespace Maya.Modules.Audio
 {
@@ -27,6 +29,24 @@ namespace Maya.Modules.Audio
         public async Task LeaveVoice()
         {
             await _service.LeaveAudio(Context.Guild);
+            var builder = new EmbedBuilder()
+                .WithAuthor(author =>
+                {
+                    author
+                    .WithName("Music")
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp");
+                })
+                .WithColor(new Color(5025616))
+                .AddField("Session", "Time") // To Do: Voice Session Time
+                .WithFooter(footer =>
+                {
+                    footer
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
+                });
+            var embed = builder.Build();
+            await ReplyAsync("", false, embed)
+                .ConfigureAwait(false);
         }
     }
 }
