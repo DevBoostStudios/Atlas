@@ -1,25 +1,18 @@
 ﻿using Discord;
 using Discord.Commands;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Maya.Modules.Utility
 {
     public class Facts : ModuleBase<SocketCommandContext>
     {
-        private IConfiguration _config;
-
         [Command("chucknorris")]
         [Summary("Returns a random fact about Chuck Norris.")]
         public async Task chucknorris()
         {
-            _config = BuildConfig();
-
             using (var client = new HttpClient())
             {
                 var json = await client.GetStringAsync("https://api.chucknorris.io/jokes/random");
@@ -79,14 +72,6 @@ namespace Maya.Modules.Utility
                 await ReplyAsync("", false, embed)
                     .ConfigureAwait(false);
             }
-        }
-
-        private IConfiguration BuildConfig()
-        {
-            return new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config.json")
-                .Build();
         }
     }
 }
