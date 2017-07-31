@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Maya.Modules.Administration
 {
     public class Information : ModuleBase<SocketCommandContext>
     {
+        private IConfiguration _config;
         private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
         private static string HeapSize() => Math.Round(GC.GetTotalMemory(true) / (1024.0 * 1024.0), 2).ToString();
 
@@ -16,6 +19,8 @@ namespace Maya.Modules.Administration
         [Summary("Display the Bot's current status.")]
         public async Task Info()
         {
+            _config = BuildConfig();
+
             var builder = new EmbedBuilder()
                 .WithColor(new Color(0xFF9800))
                 .WithAuthor(author =>
@@ -27,7 +32,7 @@ namespace Maya.Modules.Administration
                 })
                 .WithUrl("https://github.com/EthanChrisp/Maya")
                 .WithDescription("Music, Utility, and Game Discord Bot")
-                .AddInlineField("Author", "<@!132693143173857281>") // To Do: Get Client OwnerID
+                .AddInlineField("Author", "<@!" + _config["ownerID"] + ">")
                 .AddInlineField("Library", "[Discord.Net 1.0.1](https://github.com/RogueException/Discord.Net)")
                 .AddInlineField("Servers", Context.Client.Guilds.Count)
                 .AddInlineField("Uptime", Uptime())
@@ -67,6 +72,14 @@ namespace Maya.Modules.Administration
             var embed = builder.Build();
             await ReplyAsync("", false, embed)
                 .ConfigureAwait(false);
+        }
+
+        private IConfiguration BuildConfig()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json")
+                .Build();
         }
     }
 }
