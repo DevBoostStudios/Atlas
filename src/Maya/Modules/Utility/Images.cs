@@ -89,8 +89,9 @@ namespace Maya.Modules.Utility
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", _config["imgurClientID"]);
                 var json = await client.GetStringAsync("https://api.imgur.com/3/gallery/r/Rabbits");
                 dynamic parse = JsonConvert.DeserializeObject(json);
-                Console.WriteLine(parse);
-                string result = parse.link;
+                Random rnd = new Random();
+                int image = rnd.Next(0, 100);
+                string result = parse.data[image].link;
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
