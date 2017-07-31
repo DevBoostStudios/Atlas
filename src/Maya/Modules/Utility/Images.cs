@@ -87,7 +87,7 @@ namespace Maya.Modules.Utility
                 _config = BuildConfig();
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", _config["imgurClientID"]);
-                var json = await client.GetStringAsync("https://api.imgur.com/3/gallery/r/Rabbits");
+                var json = await client.GetStringAsync("https://api.imgur.com/3/gallery/r/Rabbits/top/month");
                 dynamic parse = JsonConvert.DeserializeObject(json);
                 Random rnd = new Random();
                 int image = rnd.Next(0, 100);
@@ -99,6 +99,80 @@ namespace Maya.Modules.Utility
                     {
                         author
                         .WithName("Bunny")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                    })
+                    .WithUrl(result)
+                    .WithImageUrl(result)
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        [Command("ass")]
+        [Summary("Returns a random Ass image.")]
+        public async Task Ass()
+        {
+            using (var client = new HttpClient())
+            {
+                _config = BuildConfig();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", _config["imgurClientID"]);
+                var json = await client.GetStringAsync("https://api.imgur.com/3/gallery/r/Ass/top/week");
+                dynamic parse = JsonConvert.DeserializeObject(json);
+                Random rnd = new Random();
+                int image = rnd.Next(0, 100);
+                string result = parse.data[image].link;
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Ass")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                    })
+                    .WithUrl(result)
+                    .WithImageUrl(result)
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        [Command("tits")]
+        [Summary("Returns a random Tits image.")]
+        public async Task Tits()
+        {
+            using (var client = new HttpClient())
+            {
+                _config = BuildConfig();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", _config["imgurClientID"]);
+                var json = await client.GetStringAsync("https://api.imgur.com/3/gallery/r/Boobies/top/month");
+                dynamic parse = JsonConvert.DeserializeObject(json);
+                Random rnd = new Random();
+                int image = rnd.Next(0, 100);
+                string result = parse.data[image].link;
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Tits")
                         .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
