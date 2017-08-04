@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Discord;
 using Discord.Audio;
+using Maya.Modules.Audio;
 
 namespace Maya.Modules.Audio
 {
@@ -47,6 +48,7 @@ namespace Maya.Modules.Audio
 
             if (!File.Exists(path))
             {
+                // To Do: Call DownloadService logic
                 await channel.SendMessageAsync("Error: Invalid file specified.");
                 return;
             }
