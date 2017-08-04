@@ -13,6 +13,7 @@ namespace Maya.Modules.Economy
         // Property will be filled at runtime by the IoC container (Program.cs:49)
         public LiteDatabase Database { get; set; }
         
+        [RequireContext(ContextType.Guild)]
         [Command]
         [Summary("Access a user's CODPoints Balance.")]
         public Task UserAsync(IUser user)

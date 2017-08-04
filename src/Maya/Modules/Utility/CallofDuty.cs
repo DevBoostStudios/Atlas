@@ -14,7 +14,7 @@ namespace Maya.Modules.Utility
         {
             [Command("stats")]
             [Summary("Retrieve multiplayer statistics for Call of Duty: Infinite Warfare players.")]
-            public async Task stats(string platform, string username)
+            public async Task IWStats(string platform, string username)
             {
                 // Set Profile URL
                 string url = "https://my.callofduty.com/iw/stats?platform=" + platform + "&username=" + username;

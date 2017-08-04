@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
-using Maya.Modules.Audio;
+// using Maya.Modules.Audio;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -61,6 +61,27 @@ namespace Maya.Modules.Administration
                 .ConfigureAwait(false);
 
             // To Do: Restart logic
+        }
+
+        [Group("set")]
+        [Summary("Set Bot options and attributes.")]
+        public class set : ModuleBase<SocketCommandContext>
+        {
+            [RequireOwner]
+            [Command("name")]
+            [Summary("Set the Bot username.")]
+            public async Task SetName()
+            {
+                // To Do: Set Name logic
+            }
+
+            [RequireOwner]
+            [Command("avatar")]
+            [Summary("Set the Bot avatar.")]
+            public async Task SetAvatar()
+            {
+                // To Do: Set Avatar logic
+            }
         }
     }
 }
