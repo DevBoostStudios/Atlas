@@ -289,4 +289,4 @@ __pycache__/
 
 # Sensitive Information & Temp Files
 src/Maya/config.json
-src/Maya/Data/Temp/Audio/*.*
+src/Maya/Data/Temp/*.*

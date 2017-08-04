@@ -41,8 +41,10 @@ namespace Maya.Modules.Audio
             }
         }
 
-        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string path)
+        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string filename)
         {
+            string path = "Data/Temp/Audio/" + filename + ".wav";
+
             if (!File.Exists(path))
             {
                 await channel.SendMessageAsync("Error: Invalid file specified.");
@@ -55,7 +57,7 @@ namespace Maya.Modules.Audio
                 var output = CreateStream(path).StandardOutput.BaseStream;
 
                 // Change the bitrate of the outgoing stream with an additional argument to CreatePCMStream()
-                // If not specified, the default bitrate is 96*1024 - UNCONFIRMED
+                // If not specified, the default bitrate is 96*1024
                 var stream = client.CreatePCMStream(AudioApplication.Music);
                 await output.CopyToAsync(stream);
                 await stream.FlushAsync().ConfigureAwait(false);
