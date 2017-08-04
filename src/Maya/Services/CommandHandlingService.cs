@@ -30,7 +30,6 @@ namespace Maya.Services
         {
             _provider = provider;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
-            // Add additional initialization code here...
         }
 
         private async Task MessageReceived(SocketMessage rawMessage)
@@ -39,6 +38,7 @@ namespace Maya.Services
             if (!(rawMessage is SocketUserMessage message)) return;
             if (message.Source != MessageSource.User) return;
 
+            // Command Prefix
             int argPos = 0;
             if (!message.HasStringPrefix("!", ref argPos)) return;
 
