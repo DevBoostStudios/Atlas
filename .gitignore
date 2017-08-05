@@ -288,6 +288,6 @@ __pycache__/
 *.xsd.cs
 
 # Sensitive Information & Temp Files
-src/Maya/config.json
-src/Maya/Data/Temp
-src/Maya/Data/Temp/Audio/*.*
+src/Atlas/config.json
+src/Atlas/Data/Temp
+src/Atlas/Data/Temp/Audio/*.*
