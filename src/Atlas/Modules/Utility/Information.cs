@@ -6,6 +6,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Threading;
 
 namespace Atlas.Modules.Administration
 {
@@ -37,7 +38,7 @@ namespace Atlas.Modules.Administration
                 .AddInlineField("Servers", Context.Client.Guilds.Count)
                 .AddInlineField("Uptime", Uptime())
                 .AddInlineField("Heap", HeapSize() + "MiB")
-                .AddInlineField("Latency", (Context.Client as DiscordSocketClient).Latency + "ms")
+                .AddInlineField("Latency", Context.Client.Latency + "ms")
                 .WithFooter(footer =>
                 {
                     footer
@@ -50,10 +51,49 @@ namespace Atlas.Modules.Administration
         }
 
         [RequireOwner]
-        [Command("ping")]
-        [Summary("Display the Bot's current Round Trip Latency.")]
+        [Command("ping", RunMode = RunMode.Async)]
+        [Summary("Returns the current estimated Round-Trip Latency over WebSocket.")]
         public async Task Ping()
         {
+            ulong target = 0;
+            CancellationTokenSource cts = new CancellationTokenSource();
+
+            Task WaitTarget(SocketMessage msg)
+            {
+                if (msg.Id != target) return Task.CompletedTask;
+                cts.Cancel();
+                return Task.CompletedTask;
+            }
+
+            var sw = Stopwatch.StartNew();
+            var message = await ReplyAsync("Init ---, RTT ---");
+            var init = sw.ElapsedMilliseconds;
+            target = message.Id;
+            sw.Restart();
+            Context.Client.MessageReceived += WaitTarget;
+
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(30), cts.Token);
+            }
+
+            catch (TaskCanceledException)
+            {
+                var rtt = sw.ElapsedMilliseconds;
+                sw.Stop();
+                await message.ModifyAsync(x => x.Content = "Init " + init + "ms, RTT " + rtt + "ms");
+                return;
+            }
+
+            finally
+            {
+                Context.Client.MessageReceived -= WaitTarget;
+            }
+
+            sw.Stop();
+            await message.ModifyAsync(x => x.Content = "Init " + init + "ms, RTT Timeout");
+
+
             var builder = new EmbedBuilder()
                 .WithAuthor(author =>
                 {
@@ -62,7 +102,9 @@ namespace Atlas.Modules.Administration
                     .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
                 })
                 .WithColor(new Color(0xFF9800))
-                .AddField("RTT", (Context.Client as DiscordSocketClient).Latency + "ms")
+                .AddInlineField("Heartbeat", Context.Client.Latency + "ms")
+                .AddInlineField("Init", "TBDms")
+                .AddInlineField("RTT", "TBDms")
                 .WithFooter(footer =>
                 {
                     footer

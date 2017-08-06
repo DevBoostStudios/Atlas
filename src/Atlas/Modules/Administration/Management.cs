@@ -105,17 +105,17 @@ namespace Atlas.Modules.Administration
             [Summary("Set the Bot avatar.")]
             public async Task SetAvatar(string url)
             {
-                using (var client = new HttpClient)
-                {
-                    using (var stream = await client.GetStreamAsync(url))
-                    {
-                        var imageStream = new MemoryStream();
-                        await stream.CopyToAsync(imageStream);
-                        imageStream.Position = 0;
-                    }
-                }
+                //using (var client = new HttpClient)
+                //{
+                //    using (var stream = await client.GetStreamAsync(url))
+                //    {
+                //        var imageStream = new MemoryStream();
+                //        await stream.CopyToAsync(imageStream);
+                //        imageStream.Position = 0;
+                //    }
+                //}
 
-                await Context.Client.CurrentUser.ModifyAsync(u => u.Avatar = new Image(imageStream));
+                // await Context.Client.CurrentUser.ModifyAsync(u => u.Avatar = new Image(imageStream));
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
