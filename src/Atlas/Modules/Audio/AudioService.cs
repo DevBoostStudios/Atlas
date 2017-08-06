@@ -26,7 +26,7 @@ namespace Atlas.Modules.Audio
 
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
-                // Logging stuffs
+                // await Log(LogSeverity.Info, "Connected to voice on " + guild.Name + ".");
             }
         }
 
@@ -39,28 +39,18 @@ namespace Atlas.Modules.Audio
             }
         }
 
-        //public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string song)
-        //{
-        //    string path = "Data/Temp/Audio/" + song + ".wav";
+        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string song)
+        {
+            IAudioClient client;
+            if (ConnectedChannels.TryGetValue(guild.Id, out client))
+            {
+                var output = CreateStream(song).StandardOutput.BaseStream;
+                var stream = client.CreatePCMStream(AudioApplication.Music, 128 * 1024);
 
-        //    if (!File.Exists(path))
-        //    {
-        //        await channel.SendMessageAsync("Error: File not found.");
-        //        return;
-        //    }
-
-        //    IAudioClient client;
-        //    if (ConnectedChannels.TryGetValue(guild.Id, out client))
-        //    {
-        //        // await Log(LogSeverity.Debug, "Starting playback of " + path + " in " + guild.Name + "");
-        //        var output = CreateStream(path).StandardOutput.BaseStream;
-
-        //        // Additional argument to CreatePCMStream() changes bitrate, defaults to 96 * 1024
-        //        var stream = client.CreatePCMStream(AudioApplication.Music, 128 * 1024, bufferMillis: 500);
-        //        await output.CopyToAsync(stream);
-        //        await stream.FlushAsync().ConfigureAwait(false);
-        //    }
-        //}
+                await output.CopyToAsync(stream);
+                await stream.FlushAsync().ConfigureAwait(false);
+            }
+        }
 
         public Process CreateStream(string song)
         {

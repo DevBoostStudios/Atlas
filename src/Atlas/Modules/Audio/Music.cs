@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.Audio;
 
 namespace Atlas.Modules.Audio
 {
@@ -19,17 +18,8 @@ namespace Atlas.Modules.Audio
         {
             // To Do: Configurable Music Channel
             // To Do: Only JoinVoice() if current connected voice channel = null
-            //IAudioClient client = await _service.JoinVoice(Context.Guild, (Context.User as IVoiceState).VoiceChannel);
-
-            IVoiceChannel channel = (Context.User as IVoiceState).VoiceChannel;
-            IAudioClient client = await channel.ConnectAsync();
-
-            var output = _service.CreateStream(song).StandardOutput.BaseStream;
-            var stream = client.CreatePCMStream(AudioApplication.Music, 128 * 1024);
-
-            await output.CopyToAsync(stream);
-            await stream.FlushAsync()
-                .ConfigureAwait(false);
+            await _service.JoinVoice(Context.Guild, (Context.User as IVoiceState).VoiceChannel);
+            await _service.SendAudioAsync(Context.Guild, Context.Channel, song);
         }
 
         [RequireOwner]

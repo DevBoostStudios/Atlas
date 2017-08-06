@@ -289,5 +289,4 @@ __pycache__/
 
 # Sensitive Information & Temp Files
 src/Atlas/config.json
-src/Atlas/Data/Temp
-src/Atlas/Data/Temp/Audio/*.*
+src/Atlas/Data/Temp/*.*
