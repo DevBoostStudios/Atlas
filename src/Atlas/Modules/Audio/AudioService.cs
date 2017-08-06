@@ -42,16 +42,16 @@ namespace Atlas.Modules.Audio
             }
         }
 
-        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string filename)
+        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string song)
         {
-            string path = "Data/Temp/Audio/" + filename + ".wav";
+            string path = "Data/Temp/Audio/" + song + ".wav";
 
             if (!File.Exists(path))
             {
-                // To Do: Call DownloadService logic
-                await channel.SendMessageAsync("Error: Invalid file specified.");
+                await channel.SendMessageAsync("Error: File not found.");
                 return;
             }
+
             IAudioClient client;
             if (ConnectedChannels.TryGetValue(guild.Id, out client))
             {

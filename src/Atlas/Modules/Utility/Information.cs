@@ -93,6 +93,7 @@ namespace Atlas.Modules.Administration
             sw.Stop();
             await message.ModifyAsync(x => x.Content = "Init " + init + "ms, RTT Timeout");
 
+            // To Do: Complete this shit
 
             var builder = new EmbedBuilder()
                 .WithAuthor(author =>
