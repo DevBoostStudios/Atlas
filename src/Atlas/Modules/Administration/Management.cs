@@ -40,7 +40,7 @@ namespace Atlas.Modules.Administration
             await ReplyAsync("", false, embed)
                 .ConfigureAwait(false);
 
-            // await _service.LeaveAudio(Context.Guild); // To Do: LeaveAudio on all Guilds
+            // await _service.LeaveVoice(Context.Guild); // To Do: LeaveVoice on all Guilds
             await Context.Client.SetStatusAsync(UserStatus.Invisible);
             await Task.Delay(1000);
             Environment.Exit(0);

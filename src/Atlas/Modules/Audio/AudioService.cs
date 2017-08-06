@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Discord;
@@ -11,7 +10,7 @@ namespace Atlas.Modules.Audio
     {
         private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
 
-        public async Task JoinAudio(IGuild guild, IVoiceChannel target)
+        public async Task JoinVoice(IGuild guild, IVoiceChannel target)
         {
             IAudioClient client;
             if (ConnectedChannels.TryGetValue(guild.Id, out client))
@@ -27,17 +26,16 @@ namespace Atlas.Modules.Audio
 
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
-                // await Log(LogSeverity.Info, "Connected to voice on " + guild.Name + ".");
+                // Logging stuffs
             }
         }
 
-        public async Task LeaveAudio(IGuild guild)
+        public async Task LeaveVoice(IGuild guild)
         {
             IAudioClient client;
             if (ConnectedChannels.TryRemove(guild.Id, out client))
             {
                 await client.StopAsync();
-                // await Log(LogSeverity.Info, "Disconnected from voice on " + guild.Name + ".");
             }
         }
 
@@ -64,32 +62,21 @@ namespace Atlas.Modules.Audio
         //    }
         //}
 
-        //private Process CreateStream(string path)
-        //{
-        //    return Process.Start(new ProcessStartInfo
-        //    {
-        //        FileName = "youtube-dl.exe",
-        //        Arguments = "/C youtube-dl -o - \"" + path + "\" | ffmpeg -i pipe:0 -ac 2 -f s16le -ar 48000 pipe:1",
-        //        UseShellExecute = false,
-        //        RedirectStandardOutput = true
-        //    });
-        //}
-
         public Process CreateStream(string song)
         {
-            Process currentsong = new Process();
+            Process audioStream = new Process();
 
-            currentsong.StartInfo = new ProcessStartInfo
+            audioStream.StartInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
-                Arguments = $"/C youtube-dl.exe -o - " + song + " | ffmpeg -i pipe:0 -ac 2 -f s16le -ar 48000 pipe:1",
+                Arguments = "/C youtube-dl -o - " + song + " | ffmpeg -i pipe:0 -ac 2 -f s16le -ar 48000 pipe:1",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
 
-            currentsong.Start();
-            return currentsong;
+            audioStream.Start();
+            return audioStream;
         }
     }
 }
