@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Discord;
 using Discord.Audio;
-using Atlas.Modules.Audio;
 
 namespace Atlas.Modules.Audio
 {
@@ -42,39 +41,55 @@ namespace Atlas.Modules.Audio
             }
         }
 
-        public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string song)
+        //public async Task SendAudioAsync(IGuild guild, IMessageChannel channel, string song)
+        //{
+        //    string path = "Data/Temp/Audio/" + song + ".wav";
+
+        //    if (!File.Exists(path))
+        //    {
+        //        await channel.SendMessageAsync("Error: File not found.");
+        //        return;
+        //    }
+
+        //    IAudioClient client;
+        //    if (ConnectedChannels.TryGetValue(guild.Id, out client))
+        //    {
+        //        // await Log(LogSeverity.Debug, "Starting playback of " + path + " in " + guild.Name + "");
+        //        var output = CreateStream(path).StandardOutput.BaseStream;
+
+        //        // Additional argument to CreatePCMStream() changes bitrate, defaults to 96 * 1024
+        //        var stream = client.CreatePCMStream(AudioApplication.Music, 128 * 1024, bufferMillis: 500);
+        //        await output.CopyToAsync(stream);
+        //        await stream.FlushAsync().ConfigureAwait(false);
+        //    }
+        //}
+
+        //private Process CreateStream(string path)
+        //{
+        //    return Process.Start(new ProcessStartInfo
+        //    {
+        //        FileName = "youtube-dl.exe",
+        //        Arguments = "/C youtube-dl -o - \"" + path + "\" | ffmpeg -i pipe:0 -ac 2 -f s16le -ar 48000 pipe:1",
+        //        UseShellExecute = false,
+        //        RedirectStandardOutput = true
+        //    });
+        //}
+
+        public Process CreateStream(string song)
         {
-            string path = "Data/Temp/Audio/" + song + ".wav";
+            Process currentsong = new Process();
 
-            if (!File.Exists(path))
+            currentsong.StartInfo = new ProcessStartInfo
             {
-                await channel.SendMessageAsync("Error: File not found.");
-                return;
-            }
-
-            IAudioClient client;
-            if (ConnectedChannels.TryGetValue(guild.Id, out client))
-            {
-                // await Log(LogSeverity.Debug, "Starting playback of " + path + " in " + guild.Name + "");
-                var output = CreateStream(path).StandardOutput.BaseStream;
-
-                // Change the bitrate of the outgoing stream with an additional argument to CreatePCMStream()
-                // If not specified, the default bitrate is 96*1024
-                var stream = client.CreatePCMStream(AudioApplication.Music);
-                await output.CopyToAsync(stream);
-                await stream.FlushAsync().ConfigureAwait(false);
-            }
-        }
-
-        private Process CreateStream(string path)
-        {
-            return Process.Start(new ProcessStartInfo
-            {
-                FileName = "ffmpeg.exe",
-                Arguments = "-hide_banner -loglevel panic -i \"" + path + "\" -ac 2 -f s16le -ar 48000 pipe:1",
+                FileName = "cmd.exe",
+                Arguments = $"/C youtube-dl.exe -o - " + song + " | ffmpeg -i pipe:0 -ac 2 -f s16le -ar 48000 pipe:1",
                 UseShellExecute = false,
-                RedirectStandardOutput = true
-            });
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+
+            currentsong.Start();
+            return currentsong;
         }
     }
 }
