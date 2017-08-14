@@ -29,7 +29,7 @@ namespace Atlas.Modules.Administration
                     author
                     .WithName("Atlas")
                     .WithUrl("https://github.com/EthanChrisp/Atlas")
-                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                 })
                 .WithUrl("https://github.com/EthanChrisp/Atlas")
                 .WithDescription("Music, Utility, and Game Discord Bot")
@@ -100,7 +100,7 @@ namespace Atlas.Modules.Administration
                 {
                     author
                     .WithName("Latency")
-                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                 })
                 .WithColor(new Color(0xFF9800))
                 .AddInlineField("Heartbeat", Context.Client.Latency + "ms")

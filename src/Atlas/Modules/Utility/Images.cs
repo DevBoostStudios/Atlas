@@ -30,7 +30,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Cat")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
@@ -62,7 +62,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Dog")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
@@ -91,6 +91,7 @@ namespace Atlas.Modules.Utility
                 dynamic parse = JsonConvert.DeserializeObject(json);
                 Random rnd = new Random();
                 int image = rnd.Next(0, 100);
+                Console.WriteLine(parse);
                 string result = parse.data[image].link;
 
                 var builder = new EmbedBuilder()
@@ -99,7 +100,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Bunny")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/33a1d01fc3af4aa5cdf54c1443d84047.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
