@@ -3,6 +3,7 @@ using Discord.Commands;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Utility
@@ -35,7 +36,6 @@ namespace Atlas.Modules.Utility
                 string portrait = profileParse.portrait;
                 string level = profileParse.level;
                 string sr = profileParse.competitive.rank;
-                string playtime = "0"; // To Do: Maybe something else here? Need to figure out Total Playtime since current is QP + Current Season
 
                 string qpPlaytime = profileParse.playtime.quickplay;
                 string qpElims = statsParse.stats.combat.quickplay[4].value;
@@ -56,6 +56,10 @@ namespace Atlas.Modules.Utility
                 string compDamage = statsParse.stats.combat.competitive[5].value;
                 string compStreak = statsParse.stats.miscellaneous.competitive[5].value;
                 string compMostPlayed = statsParse.stats.top_heroes.competitive[0].hero;
+
+                string qpTime = Regex.Match(qpPlaytime, @"\d+").Value;
+                string compTime = Regex.Match(compPlaytime, @"\d+").Value;
+                string playtime = Int32.Parse(qpTime) + Int32.Parse(compTime) + " hours";
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
@@ -78,7 +82,7 @@ namespace Atlas.Modules.Utility
                     .AddInlineField("Damage", qpDamage)
                     .AddInlineField("Streak", qpStreak)
                     .AddInlineField("Most Played", qpMostPlayed)
-                    .AddField("​", "__**Competitive Season 5**__") // Zero-Width Space - // To Do: Cumulative Competitive Stats or a way to pull current Season #
+                    .AddField("​", "__**Current Competitive Season**__") // Zero-Width Space - // To Do: Cumulative Competitive Stats or a way to pull current Season #
                     .AddInlineField("Playtime", compPlaytime)
                     .AddInlineField("Eliminations", compElims)
                     .AddInlineField("Deaths", compDeaths)
