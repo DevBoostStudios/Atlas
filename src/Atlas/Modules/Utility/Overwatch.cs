@@ -22,9 +22,10 @@ namespace Atlas.Modules.Utility
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36");
-                        var json = await client.GetStringAsync("https://owapi.net/api/v3/u/" + username + "/blob?platform=" + platform);
+                        var json = await client.GetStringAsync("https://owapi.net/api/v3/u/" + username + "/blob?platform=" + platform.ToLower()); // To Do: Sanitize Platforms and Usernames if necessary
                         dynamic parse = JsonConvert.DeserializeObject(json);
 
+                        // To Do: Bnet (PC) specifies region, "any" will need replaced with region somehow
                         string portrait = parse.any.stats.quickplay.overall_stats.avatar;
                         string skillRating = parse.any.stats.competitive.overall_stats.comprank;
 
@@ -60,7 +61,7 @@ namespace Atlas.Modules.Utility
                             .WithAuthor(author =>
                             {
                                 author
-                                .WithName(username + " (" + platform.ToUpper() + ")")
+                                .WithName("Overwatch - " + username + " (" + platform.ToUpper() + ")")
                                 .WithIconUrl(portrait)
                                 .WithUrl("https://masteroverwatch.com/profile/" + platform + "/global/" + username);
                             })
@@ -102,7 +103,7 @@ namespace Atlas.Modules.Utility
 
             [Command("heroes")]
             [Summary("Retrieve Hero-specific statistics for the specified Overwatch player.")]
-            public async Task OWHeroes(string platform, string username)
+            public async Task OWHeroes(string hero, string platform, string username)
             {
                 using (Context.Channel.EnterTypingState())
                 {
@@ -111,8 +112,71 @@ namespace Atlas.Modules.Utility
                         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36");
                         var json = await client.GetStringAsync("https://owapi.net/api/v3/u/" + username + "/blob?platform=" + platform);
                         dynamic parse = JsonConvert.DeserializeObject(json);
+                        // To Do: Bnet (PC) specifies region, "any" will need replaced with region somehow
 
-                        // To Do: OW Heroes logic
+                        string portrait = parse.any.stats.quickplay.overall_stats.avatar;
+                        string heroName = hero.Substring(0, 1).ToUpper() + hero.Substring(1);
+                        string heroID = "1"; // To Do: Figure this out
+
+                        string qpElims = "-";
+                        string qpDeaths = "-";
+                        string qpPlaytime = "-";
+                        string qpWins = "-";
+                        string qpHealing = "-" + "HP";
+                        string qpDamage = "-";
+                        string qpBlocked = "-";
+                        string qpStreak = "-";
+                        string qpAccuracy = "-" + "%";
+
+                        string compElims = "-";
+                        string compDeaths = "-";
+                        string compPlaytime = "-";
+                        string compWins = "-";
+                        string compHealing = "-" + "HP";
+                        string compDamage = "-";
+                        string compBlocked = "-";
+                        string compStreak = "-";
+                        string compAccuracy = "-" + "%";
+
+                        var builder = new EmbedBuilder()
+                            .WithColor(new Color(5025616))
+                            .WithAuthor(author =>
+                            {
+                                author
+                                .WithName("Overwatch - " + username + " (" + platform.ToUpper() + ")")
+                                .WithIconUrl(portrait)
+                                .WithUrl("https://masteroverwatch.com/profile/" + platform + "/global/" + username + "/heroes/" + heroID);
+                            })
+                            .AddField("Hero", heroName)
+                            .AddField("​", "__**Quickplay**__")
+                            .AddInlineField("Eliminations", qpElims)
+                            .AddInlineField("Deaths", qpDeaths)
+                            .AddInlineField("Playtime", qpPlaytime)
+                            .AddInlineField("Wins", qpWins)
+                            .AddInlineField("Healing", qpHealing)
+                            .AddInlineField("Damage", qpDamage)
+                            .AddInlineField("Damage Blocked", qpBlocked)
+                            .AddInlineField("Kill Streak", qpStreak)
+                            .AddInlineField("Accuracy", qpAccuracy)
+                            .AddField("​", "__**Current Competitive Season**__")
+                            .AddInlineField("Eliminations", compElims)
+                            .AddInlineField("Deaths", compDeaths)
+                            .AddInlineField("Playtime", compPlaytime)
+                            .AddInlineField("Wins", compWins)
+                            .AddInlineField("Healing", compHealing)
+                            .AddInlineField("Damage", compDamage)
+                            .AddInlineField("Damage Blocked", compBlocked)
+                            .AddInlineField("Kill Streak", compStreak)
+                            .AddInlineField("Accuracy", compAccuracy)
+                            .WithFooter(footer =>
+                            {
+                                footer
+                                .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                                .WithIconUrl(Context.User.GetAvatarUrl());
+                            });
+                        var embed = builder.Build();
+                        await ReplyAsync("", false, embed)
+                            .ConfigureAwait(false);
                     }
                 }
             }
