@@ -1,9 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
-// using Atlas.Modules.Audio;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Administration
@@ -11,9 +11,6 @@ namespace Atlas.Modules.Administration
     public class Management : ModuleBase<SocketCommandContext>
     {
         private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
-        // private readonly AudioService _service;
-        private MemoryStream imageStream;
-        public MemoryStream GetStream => imageStream;
 
         [RequireOwner]
         [Command("shutdown")]
@@ -39,9 +36,9 @@ namespace Atlas.Modules.Administration
             await ReplyAsync("", false, embed)
                 .ConfigureAwait(false);
 
-            // await _service.LeaveVoice(Context.Guild); // To Do: LeaveVoice on all Guilds
+            // To Do: LeaveVoice on all Guilds
             await Context.Client.SetStatusAsync(UserStatus.Invisible);
-            await Task.Delay(1000);
+            await Task.Delay(500);
             Environment.Exit(0);
         }
 
@@ -97,6 +94,7 @@ namespace Atlas.Modules.Administration
                 var embed = builder.Build();
                 await ReplyAsync("", false, embed)
                     .ConfigureAwait(false);
+                // To Do: This is broken now?????
             }
 
             [RequireOwner]
@@ -104,17 +102,18 @@ namespace Atlas.Modules.Administration
             [Summary("Set the Bot avatar.")]
             public async Task SetAvatar(string url)
             {
-                //using (var client = new HttpClient)
-                //{
-                //    using (var stream = await client.GetStreamAsync(url))
-                //    {
-                //        var imageStream = new MemoryStream();
-                //        await stream.CopyToAsync(imageStream);
-                //        imageStream.Position = 0;
-                //    }
-                //}
+                var imageStream = new MemoryStream();
 
-                // await Context.Client.CurrentUser.ModifyAsync(u => u.Avatar = new Image(imageStream));
+                using (var client = new HttpClient())
+                {
+                    using (var stream = await client.GetStreamAsync(url))
+                    {
+                        await stream.CopyToAsync(imageStream);
+                        imageStream.Position = 0;
+                    }
+                }
+
+                await Context.Client.CurrentUser.ModifyAsync(x => x.Avatar = new Image(imageStream));
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
@@ -145,6 +144,7 @@ namespace Atlas.Modules.Administration
             public async Task SetStatus(string status) // To Do: Need an overflow for Streaming Status URL?
             {
                 // To Do: SetStatus logic
+                await ReplyAsync("To Do", false);
             }
 
             [RequireOwner]
@@ -153,6 +153,7 @@ namespace Atlas.Modules.Administration
             public async Task SetGame(string game)
             {
                 // To Do: SetGame logic
+                await ReplyAsync("To Do", false);
             }
         }
     }

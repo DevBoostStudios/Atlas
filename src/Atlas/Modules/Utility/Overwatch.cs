@@ -13,7 +13,7 @@ namespace Atlas.Modules.Utility
         [Summary("Retrieve information for the specified Overwatch player.")]
         public class OW : ModuleBase<SocketCommandContext>
         {
-            [Command("stats")]
+            [Command("stats", RunMode = RunMode.Async)]
             [Summary("Retrieve statistics for the specified Overwatch player.")]
             public async Task OWStats(string platform, string username)
             {
@@ -22,7 +22,7 @@ namespace Atlas.Modules.Utility
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36");
-                        var json = await client.GetStringAsync("https://owapi.net/api/v3/u/" + username + "/blob?platform=" + platform.ToLower()); // To Do: Sanitize Platforms and Usernames if necessary
+                        var json = await client.GetStringAsync("https://owapi.net/api/v3/u/" + username + "/blob?platform=" + platform.ToLower()); // To Do: Sanitize Platforms and Usernames if necessary (PS4 -> PSN, # -> -, etc)
                         dynamic parse = JsonConvert.DeserializeObject(json);
 
                         // To Do: Bnet (PC) specifies region, "any" will need replaced with region somehow
@@ -101,7 +101,7 @@ namespace Atlas.Modules.Utility
                 }
             }
 
-            [Command("heroes")]
+            [Command("heroes", RunMode = RunMode.Async)]
             [Summary("Retrieve Hero-specific statistics for the specified Overwatch player.")]
             public async Task OWHeroes(string hero, string platform, string username)
             {
