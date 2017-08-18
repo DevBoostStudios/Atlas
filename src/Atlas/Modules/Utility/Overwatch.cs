@@ -15,7 +15,7 @@ namespace Atlas.Modules.Utility
         {
             [Command("stats", RunMode = RunMode.Async)]
             [Summary("Retrieve statistics for the specified Overwatch player.")]
-            public async Task OWStats(string platform, string username)
+            public async Task OWStats(string platform, [Remainder] string username)
             {
                 using (Context.Channel.EnterTypingState())
                 {
@@ -103,7 +103,7 @@ namespace Atlas.Modules.Utility
 
             [Command("heroes", RunMode = RunMode.Async)]
             [Summary("Retrieve Hero-specific statistics for the specified Overwatch player.")]
-            public async Task OWHeroes(string hero, string platform, string username)
+            public async Task OWHeroes(string hero, string platform, [Remainder] string username)
             {
                 using (Context.Channel.EnterTypingState())
                 {

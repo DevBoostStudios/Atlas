@@ -14,7 +14,7 @@ namespace Atlas.Modules.Utility
         {
             [Command("stats", RunMode = RunMode.Async)]
             [Summary("Retrieve multiplayer statistics for the specified Call of Duty: Infinite Warfare player.")]
-            public async Task IWStats(string platform, string username)
+            public async Task IWStats(string platform, [Remainder] string username)
             {
                 string url = "https://my.callofduty.com/iw/stats?platform=" + platform + "&username=" + username;
                 HtmlDocument htmlDoc = new HtmlWeb().Load(url);
