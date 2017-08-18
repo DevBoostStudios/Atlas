@@ -91,7 +91,6 @@ namespace Atlas.Modules.Utility
                 dynamic parse = JsonConvert.DeserializeObject(json);
                 Random rnd = new Random();
                 int image = rnd.Next(0, 100);
-                Console.WriteLine(parse);
                 string result = parse.data[image].link;
 
                 var builder = new EmbedBuilder()

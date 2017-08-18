@@ -12,7 +12,7 @@ namespace Atlas.Modules.Utility
         [Summary("Retrieve multiplayer information for Call of Duty: Infinite Warfare players.")]
         public class IW : ModuleBase<SocketCommandContext>
         {
-            [Command("stats")]
+            [Command("stats", RunMode = RunMode.Async)]
             [Summary("Retrieve multiplayer statistics for the specified Call of Duty: Infinite Warfare player.")]
             public async Task IWStats(string platform, string username)
             {
@@ -66,7 +66,7 @@ namespace Atlas.Modules.Utility
                     .ConfigureAwait(false);
             }
 
-            [Command("leaderboard")]
+            [Command("leaderboard", RunMode = RunMode.Async)]
             [Summary("Return Leaderboard statistics for the specified Leaderboard position.")]
             public async Task IWLeaderboard(string position, string platform)
             {
@@ -74,7 +74,7 @@ namespace Atlas.Modules.Utility
                 HtmlDocument htmlDoc = new HtmlWeb().Load(url);
             }
 
-            [Command("status")]
+            [Command("status", RunMode = RunMode.Async)]
             [Summary("Return the current server status of Call of Duty: Infinite Warfare.")]
             public async Task IWStatus()
             {
