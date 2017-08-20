@@ -22,7 +22,7 @@ namespace Atlas.Modules.Administration
                 .WithAuthor(author =>
                 {
                     author
-                    .WithName("Maya")
+                    .WithName("Atlas")
                     .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
                 })
                 .WithDescription("Shutting down...")
@@ -50,7 +50,7 @@ namespace Atlas.Modules.Administration
         {
             var builder = new EmbedBuilder()
                 .WithColor(new Color(0xFF9800))
-                .WithAuthor("Maya")
+                .WithAuthor("Atlas")
                 .WithDescription("Restarting...")
                 .WithFooter(footer =>
                 {

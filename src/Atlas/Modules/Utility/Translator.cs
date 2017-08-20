@@ -2,8 +2,11 @@
 using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -80,8 +83,6 @@ namespace Atlas.Modules.Utility
                         var json = await client.GetStringAsync("https://translate.yandex.net/api/v1.5/tr.json/getLangs?ui=en&key=" + yandexKey);
                         dynamic parse = JsonConvert.DeserializeObject(json);
 
-                        string langs = parse.langs[0]; // To Do: Not finished
-
                         var builder = new EmbedBuilder()
                             .WithColor(new Color(5025616))
                             .WithAuthor(author =>
@@ -90,7 +91,7 @@ namespace Atlas.Modules.Utility
                                 .WithName("Translate")
                                 .WithIconUrl("http://i.imgur.com/qHGDulG.png");
                             })
-                            .AddInlineField("Language", langs)
+                            .AddInlineField("Language", "To Do") // To Do: Take langs from parse and make an InlineField for each
                             .WithFooter(footer =>
                             {
                                 footer
