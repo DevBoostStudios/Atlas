@@ -37,9 +37,8 @@ namespace Atlas.Modules.Utility
                     using (var client = new HttpClient())
                     {
                         _config = BuildConfig();
-                        var yandexKey = _config["yandexKey"];
 
-                        var json = await client.GetStringAsync("https://translate.yandex.net/api/v1.5/tr.json/translate?text=" + input + "&detect?hint=en&lang=" + outputLang + "&key=" + yandexKey);
+                        var json = await client.GetStringAsync("https://translate.yandex.net/api/v1.5/tr.json/translate?text=" + input + "&detect?hint=en&lang=" + outputLang + "&key=" + _config["yandexKey"]);
                         dynamic parse = JsonConvert.DeserializeObject(json);
 
                         string output = parse.text[0];
