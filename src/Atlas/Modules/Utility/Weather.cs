@@ -3,6 +3,7 @@ using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,16 +42,21 @@ namespace Atlas.Modules.Utility
                     string windSpeed = parse.wind.speed;
                     string pressure = parse.main.pressure;
 
-                    string day1Init = forecastParse.list[0].dt_txt;
-                    string day1 = day1Init.Split(' ')[0]; // To Do: Get name of Day of Week
+                    string day1Init = forecastParse.list[4].dt_txt;
+                    string day1Split = day1Init.Split(' ')[0];
+                    var day1 = DateTime.ParseExact(day1Split.Replace("-", ""), "yyyyMMdd", CultureInfo.InvariantCulture).DayOfWeek.ToString();
                     double day1TempHigh = forecastParse.list[0].main.temp_max;
                     double day1TempLow = forecastParse.list[0].main.temp_min;
-                    string day2Init = forecastParse.list[1].dt_txt;
-                    string day2 = day2Init.Split(' ')[0]; // To Do: Get name of Day of Week
+
+                    string day2Init = forecastParse.list[12].dt_txt;
+                    string day2Split = day2Init.Split(' ')[0];
+                    var day2 = DateTime.ParseExact(day2Split.Replace("-", ""), "yyyyMMdd", CultureInfo.InvariantCulture).DayOfWeek.ToString();
                     double day2TempHigh = forecastParse.list[1].main.temp_max;
                     double day2TempLow = forecastParse.list[1].main.temp_min;
-                    string day3Init = forecastParse.list[2].dt_txt;
-                    string day3 = day3Init.Split(' ')[0]; // To Do: Get name of Day of Week
+
+                    string day3Init = forecastParse.list[20].dt_txt;
+                    string day3Split = day3Init.Split(' ')[0];
+                    var day3 = DateTime.ParseExact(day3Split.Replace("-", ""), "yyyyMMdd", CultureInfo.InvariantCulture).DayOfWeek.ToString();
                     double day3TempHigh = forecastParse.list[2].main.temp_max;
                     double day3TempLow = forecastParse.list[2].main.temp_min;
 
