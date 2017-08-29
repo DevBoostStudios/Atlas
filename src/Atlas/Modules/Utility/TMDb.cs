@@ -33,7 +33,10 @@ namespace Atlas.Modules.Utility
 
                     string movieTitle = parse.results[0].title;
                     string imdbID = detailsParse.imdb_id;
-                    string overview = parse.results[0].overview;
+
+                    string overviewInit = parse.results[0].overview;
+                    string overview = Ellipsis(overviewInit, 250);
+
                     string poster = "https://image.tmdb.org/t/p/w640" + parse.results[0].poster_path;
 
                     string dateInit = parse.results[0].release_date;
