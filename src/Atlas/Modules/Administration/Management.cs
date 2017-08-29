@@ -141,6 +141,60 @@ namespace Atlas.Modules.Administration
             }
 
             [RequireOwner]
+            [Command("game")]
+            [Summary("Set the Bot playing status.")]
+            public async Task SetGame(string game)
+            {
+                if (game == "none")
+                {
+                    await Context.Client.SetGameAsync(null);
+
+                    var builder = new EmbedBuilder()
+                        .WithColor(new Color(5025616))
+                        .WithAuthor(author =>
+                        {
+                            author
+                            .WithName("Atlas")
+                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                    })
+                        .WithDescription("Cleared Playing status.")
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                    var embed = builder.Build();
+                    await ReplyAsync("", false, embed)
+                        .ConfigureAwait(false);
+                }
+
+                else
+                {
+                    await Context.Client.SetGameAsync(game);
+
+                    var builder = new EmbedBuilder()
+                        .WithColor(new Color(5025616))
+                        .WithAuthor(author =>
+                        {
+                            author
+                            .WithName("Atlas")
+                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        })
+                        .WithDescription("Set Playing status to " + game + ".")
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                    var embed = builder.Build();
+                    await ReplyAsync("", false, embed)
+                        .ConfigureAwait(false);
+                }
+            }
+
+            [RequireOwner]
             [Command("online")]
             [Summary("Set the Bot status to Online.")]
             public async Task SetOnline()
@@ -246,15 +300,6 @@ namespace Atlas.Modules.Administration
                 var embed = builder.Build();
                 await ReplyAsync("", false, embed)
                     .ConfigureAwait(false);
-            }
-
-            [RequireOwner]
-            [Command("game")]
-            [Summary("Set the Bot playing status.")]
-            public async Task SetGame(string game)
-            {
-                // To Do: SetGame logic
-                await ReplyAsync("To Do", false);
             }
         }
     }
