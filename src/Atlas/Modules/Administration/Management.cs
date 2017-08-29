@@ -143,7 +143,7 @@ namespace Atlas.Modules.Administration
             [RequireOwner]
             [Command("game")]
             [Summary("Set the Bot playing status.")]
-            public async Task SetGame(string game)
+            public async Task SetGame([Remainder] string game)
             {
                 if (game == "none")
                 {
