@@ -77,7 +77,7 @@ namespace Atlas.Modules.Administration
                 await Context.Client.CurrentUser.ModifyAsync(u => u.Username = username);
 
                 var builder = new EmbedBuilder()
-                    .WithColor(new Color(5025616))
+                    .WithColor(new Color(0xFF9800))
                     .WithAuthor(author =>
                     {
                         author
@@ -118,7 +118,7 @@ namespace Atlas.Modules.Administration
                 await Context.Client.CurrentUser.ModifyAsync(x => x.Avatar = new Image(imageStream));
 
                 var builder = new EmbedBuilder()
-                    .WithColor(new Color(5025616))
+                    .WithColor(new Color(0xFF9800))
                     .WithAuthor(author =>
                     {
                         author
@@ -150,7 +150,7 @@ namespace Atlas.Modules.Administration
                     await Context.Client.SetGameAsync(null);
 
                     var builder = new EmbedBuilder()
-                        .WithColor(new Color(5025616))
+                        .WithColor(new Color(0xFF9800))
                         .WithAuthor(author =>
                         {
                             author
@@ -174,7 +174,7 @@ namespace Atlas.Modules.Administration
                     await Context.Client.SetGameAsync(game);
 
                     var builder = new EmbedBuilder()
-                        .WithColor(new Color(5025616))
+                        .WithColor(new Color(0xFF9800))
                         .WithAuthor(author =>
                         {
                             author
