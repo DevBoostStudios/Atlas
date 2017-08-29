@@ -83,6 +83,73 @@ namespace Atlas.Modules.Utility
             }
         }
 
+        [Command("actor")]
+        [Summary("Returns detailed information from TMDb on the specified Actor/Actress.")]
+        public async Task Actor([Remainder] string actor)
+        {
+            using (Context.Channel.EnterTypingState())
+            {
+                using (var client = new HttpClient())
+                {
+                    _config = BuildConfig();
+
+                    var json = await client.GetStringAsync("https://api.themoviedb.org/3/search/person?api_key=" + _config["tmdbKey"] + "&query=" + actor);
+                    dynamic parse = JsonConvert.DeserializeObject(json);
+
+                    string tmdbID = parse.results[0].id;
+
+                    var detailsJSON = await client.GetStringAsync("https://api.themoviedb.org/3/person/" + tmdbID + "?api_key=" + _config["tmdbKey"]);
+                    dynamic detailsParse = JsonConvert.DeserializeObject(detailsJSON);
+
+                    string name = parse.results[0].name;
+                    string imdbID = detailsParse.imdb_id;
+
+                    string overviewInit = detailsParse.biography;
+                    string overview = Ellipsis(overviewInit, 250);
+
+                    string portrait = "https://image.tmdb.org/t/p/w640" + detailsParse.profile_path;
+
+                    string bornDateInit = detailsParse.birthday;
+                    string bornDateYear = bornDateInit.Split('-')[0];
+                    string bornDateMonth = bornDateInit.Split('-')[1];
+                    string bornDateDay = bornDateInit.Split('-')[2];
+                    DateTime bornDate = new DateTime(Convert.ToInt32(bornDateYear), Convert.ToInt32(bornDateMonth), Convert.ToInt32(bornDateDay));
+                    string born = bornDate.ToString("MMMM dd, yyyy");
+
+                    string birthplace = detailsParse.place_of_birth;
+
+
+                    var builder = new EmbedBuilder()
+                        .WithColor(new Color(5025616))
+                        .WithAuthor(author =>
+                        {
+                            author
+                            .WithName(name)
+                            .WithUrl("http://www.imdb.com/name/" + imdbID)
+                            .WithIconUrl("http://i.imgur.com/YuiDMzL.png");
+                        })
+                        .WithDescription(overview)
+                        .WithThumbnailUrl(portrait)
+                        .AddInlineField("Born", born)
+                        .AddInlineField("Birthplace", birthplace)
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                    var embed = builder.Build();
+                    await ReplyAsync("", false, embed)
+                        .ConfigureAwait(false);
+                }
+            }
+        }
+
+        public string Ellipsis(string text, int length)
+        {
+            return text.Substring(0, length) + "…";
+        }
+
         private IConfiguration BuildConfig()
         {
             return new ConfigurationBuilder()
