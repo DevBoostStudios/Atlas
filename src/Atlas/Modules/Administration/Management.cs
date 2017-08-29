@@ -141,12 +141,111 @@ namespace Atlas.Modules.Administration
             }
 
             [RequireOwner]
-            [Command("status")]
-            [Summary("Set the Bot status.")]
-            public async Task SetStatus(string status) // To Do: Need an overflow for Streaming Status URL?
+            [Command("online")]
+            [Summary("Set the Bot status to Online.")]
+            public async Task SetOnline()
             {
-                // To Do: SetStatus logic
-                await ReplyAsync("To Do", false);
+                await Context.Client.SetStatusAsync(UserStatus.Online);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(4437377))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atlas")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                })
+                    .WithDescription("Status set to Online.")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            [RequireOwner]
+            [Command("idle")]
+            [Summary("Set the Bot status to Idle.")]
+            public async Task SetAway()
+            {
+                await Context.Client.SetStatusAsync(UserStatus.Idle);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(16426522))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atlas")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                    })
+                    .WithDescription("Status set to Idle.")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            [RequireOwner]
+            [Command("disturb")]
+            [Summary("Set the Bot status to Do Not Disturb.")]
+            public async Task SetDoNotDisturb()
+            {
+                await Context.Client.SetStatusAsync(UserStatus.DoNotDisturb);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(15746887))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atlas")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                    })
+                    .WithDescription("Status set to Do Not Disturb.")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            [RequireOwner]
+            [Command("invisible")]
+            [Summary("Set the Bot status to Invisible.")]
+            public async Task SetInvisible()
+            {
+                await Context.Client.SetStatusAsync(UserStatus.Invisible);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(7634877))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atlas")
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                    })
+                    .WithDescription("Status set to Invisible.")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
             }
 
             [RequireOwner]
