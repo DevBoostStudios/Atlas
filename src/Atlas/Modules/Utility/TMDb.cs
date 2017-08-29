@@ -85,6 +85,77 @@ namespace Atlas.Modules.Utility
             }
         }
 
+        [Command("show")]
+        [Summary("Returns detailed information from TMDb on the specified Television Show.")]
+        public async Task Show([Remainder] string show)
+        {
+            using (Context.Channel.EnterTypingState())
+            {
+                using (var client = new HttpClient())
+                {
+                    _config = BuildConfig();
+
+                    var json = await client.GetStringAsync("https://api.themoviedb.org/3/search/tv?api_key=" + _config["tmdbKey"] + "&query=" + show);
+                    dynamic parse = JsonConvert.DeserializeObject(json);
+
+                    string tmdbID = parse.results[0].id;
+
+                    var detailsJSON = await client.GetStringAsync("https://api.themoviedb.org/3/tv/" + tmdbID + "?api_key=" + _config["tmdbKey"]);
+                    dynamic detailsParse = JsonConvert.DeserializeObject(detailsJSON);
+
+                    string showTitle = detailsParse.name;
+
+                    string overviewInit = parse.results[0].overview;
+                    string overview = Ellipsis(overviewInit, 250);
+
+                    string poster = "https://image.tmdb.org/t/p/w640" + parse.results[0].poster_path;
+
+                    string firstAirInit = parse.results[0].first_air_date;
+                    string firstAirYear = firstAirInit.Split('-')[0];
+                    string firstAirMonth = firstAirInit.Split('-')[1];
+                    string firstAirDay = firstAirInit.Split('-')[2];
+                    DateTime firstAirDate = new DateTime(Convert.ToInt32(firstAirYear), Convert.ToInt32(firstAirMonth), Convert.ToInt32(firstAirDay));
+                    string firstAir = firstAirDate.ToString("MMMM dd, yyyy");
+
+                    string status = detailsParse.status;
+                    string createdBy = detailsParse.created_by[0].name;
+                    string rating = detailsParse.vote_average + "/10";
+                    string genre = detailsParse.genres[0].name;
+                    string type = detailsParse.type;
+                    string seasons = detailsParse.number_of_seasons;
+                    string episodes = detailsParse.number_of_episodes;
+
+                    var builder = new EmbedBuilder()
+                        .WithColor(new Color(5025616))
+                        .WithAuthor(author =>
+                        {
+                            author
+                            .WithName(showTitle)
+                            .WithIconUrl("http://i.imgur.com/YuiDMzL.png");
+                        })
+                        .WithDescription(overview)
+                        .WithThumbnailUrl(poster)
+                        .AddInlineField("First Air", firstAir)
+                        .AddInlineField("Status", status)
+                        .AddInlineField("Created By", createdBy)
+                        .AddInlineField("Rating", rating)
+                        .AddInlineField("Genre", genre)
+                        .AddInlineField("Type", type)
+                        .AddInlineField("Seasons", seasons)
+                        .AddInlineField("Episodes", episodes)
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                    var embed = builder.Build();
+                    await ReplyAsync("", false, embed)
+                        .ConfigureAwait(false);
+                }
+            }
+        }
+
         [Command("actor")]
         [Summary("Returns detailed information from TMDb on the specified Actor/Actress.")]
         public async Task Actor([Remainder] string actor)
