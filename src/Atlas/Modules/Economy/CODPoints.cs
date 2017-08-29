@@ -23,7 +23,7 @@ namespace Atlas.Modules.Economy
         {
             var users = Database.GetCollection<User>("users");
             var model = users.FindOne(u => u.Id == user.Id);
-            var CODPoints = model?.Points ?? 0;
+            var CODPoints = model?.CODPoints ?? 0;
 
             var builder = new EmbedBuilder()
                 .WithColor(new Color(5025616))

@@ -66,7 +66,7 @@ namespace Atlas.Services
         {
             var users = _database.GetCollection<User>("users");
             var user = users.FindOne(u => u.Id == context.User.Id) ?? new User { Id = context.User.Id };
-            ++user.Points;
+            ++user.CODPoints;
             users.Upsert(user);
 
             // If sending a levelup notification, flag this Task as async and remove the following line
