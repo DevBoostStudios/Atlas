@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Atlas.Data;
 using Discord;
 using Discord.Commands;
-using Atlas.Data;
 using LiteDB;
 using System;
+using System.Threading.Tasks;
 
 namespace Atlas.Modules.Economy
 {

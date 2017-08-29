@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Atlas.Modules.Audio;
+using Atlas.Services;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Atlas.Services;
 using LiteDB;
-using Atlas.Modules.Audio;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Atlas
 {
@@ -49,7 +49,7 @@ namespace Atlas
 
                 // Extra
                 .AddSingleton(_config)
-                .AddSingleton(new LiteDatabase("bot.db"))
+                .AddSingleton(new LiteDatabase("Atlas.db"))
                 .AddSingleton(new AudioService())
 
                 .BuildServiceProvider();

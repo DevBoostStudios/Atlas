@@ -1,13 +1,13 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using Atlas.Data;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Atlas.Data;
 using LiteDB;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Atlas.Services
 {

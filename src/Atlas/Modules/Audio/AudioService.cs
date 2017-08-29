@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using Discord;
+﻿using Discord;
 using Discord.Audio;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Atlas.Modules.Audio
 {
