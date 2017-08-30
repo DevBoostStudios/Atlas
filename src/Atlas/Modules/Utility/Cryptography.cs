@@ -75,7 +75,7 @@ namespace Atlas.Modules.Utility
             [Summary("Encode the specified Text in Base64.")]
             public async Task Base64Encode([Remainder] string text)
             {
-                var textBytes = System.Text.Encoding.UTF8.GetBytes(text);
+                var textBytes = Encoding.UTF8.GetBytes(text);
                 var encodedText = Convert.ToBase64String(textBytes);
 
                 var builder = new EmbedBuilder()
@@ -104,7 +104,7 @@ namespace Atlas.Modules.Utility
             public async Task Base64Decode([Remainder] string cipher)
             {
                 var base64EncodedBytes = Convert.FromBase64String(cipher);
-                var decodedCipher = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                var decodedCipher = Encoding.UTF8.GetString(base64EncodedBytes);
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
