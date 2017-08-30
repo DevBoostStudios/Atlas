@@ -213,5 +213,69 @@ namespace Atlas.Modules.Utility
             }
         }
 
+        [Group("hex")]
+        [Summary("Hexadecimal is a positional numeral system with a radix, or base, of 16.")]
+        public class Hex : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("Encode the specified Text in Hex.")]
+            public async Task HexEncode([Remainder] string text)
+            {
+                var encodedText = string.Join("", text.Select(c => ((int)c).ToString("X2")));
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Hex")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Plaintext", "`" + text + "`")
+                    .AddField("Cipher Text", "`" + encodedText + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            [Command("decode")]
+            [Summary("Decode the specified Hex Ciphertext to Plaintext.")]
+            public async Task HexDecode([Remainder] string cipher)
+            {
+                var hexEncodedBytes = new byte[cipher.Length / 2];
+                for (var i = 0; i < hexEncodedBytes.Length; i++)
+                {
+                    hexEncodedBytes[i] = Convert.ToByte(cipher.Substring(i * 2, 2), 16);
+                }
+
+                var decodedCipher = Encoding.UTF8.GetString(hexEncodedBytes);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Hex")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Cipher Text", "`" + cipher + "`")
+                    .AddField("Plaintext", "`" + decodedCipher + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+        }
     }
 }
