@@ -393,21 +393,113 @@ namespace Atlas.Modules.Utility
         }
 
         [Group("atbash")]
-        [Summary("To Do")]
+        [Summary("Atbash is a monoalphabetic cipher formed by taking the alphabet and mapping it to its reverse.")]
         public class Atbash : ModuleBase<SocketCommandContext>
-        { // https://www.dotnetperls.com/atbash
+        {
             [Command("encode")]
-            [Summary("To Do")]
+            [Summary("Encode the specified Text using Atbash.")]
             public async Task AtbashEncode([Remainder] string text)
             {
-                await ReplyAsync("Debug: To Do");
+                AtbashTable atbash = new AtbashTable();
+
+                var encodedText = atbash.Transform(text);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atbash")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Decoded", "`" + text + "`")
+                    .AddField("Encoded", "`" + encodedText + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
             }
 
             [Command("decode")]
-            [Summary("To Do")]
+            [Summary("Decode the specified Atbash Ciphertext to Plaintext.")]
             public async Task AtbashDecode([Remainder] string cipher)
             {
-                await ReplyAsync("Debug: To Do");
+                AtbashTable atbash = new AtbashTable();
+
+                var decodedText = atbash.Transform(cipher);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Atbash")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Encoded", "`" + cipher + "`")
+                    .AddField("Decoded", "`" + decodedText + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            class AtbashTable
+            {
+                char[] _shift = new char[char.MaxValue];
+
+                public AtbashTable()
+                {
+                    // Set these as the same
+                    for (int i = 0; i < char.MaxValue; i++)
+                    {
+                        _shift[i] = (char)i;
+                    }
+
+                    // Reverse order of capital letters
+                    for (char c = 'A'; c <= 'Z'; c++)
+                    {
+                        _shift[(int)c] = (char)('Z' + 'A' - c);
+                    }
+
+                    // Reverse order of lowercase letters
+                    for (char c = 'a'; c <= 'z'; c++)
+                    {
+                        _shift[(int)c] = (char)('z' + 'a' - c);
+                    }
+                }
+
+                public string Transform(string value)
+                {
+                    try
+                    {
+                        char[] a = value.ToCharArray();
+
+                        // Shift each letter
+                        for (int i = 0; i < a.Length; i++)
+                        {
+                            int t = (int)a[i];
+                            a[i] = _shift[t];
+                        }
+
+                        return new string(a);
+                    }
+                    catch
+                    {
+                        // Return original value on fail
+                        return value;
+                    }
+                }
             }
         }
 
