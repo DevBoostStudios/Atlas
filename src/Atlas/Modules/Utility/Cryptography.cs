@@ -18,14 +18,14 @@ namespace Atlas.Modules.Utility
             [Summary("To Do")]
             public async Task MorseEncode([Remainder] string text)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
 
             [Command("decode")]
             [Summary("To Do")]
             public async Task MorseDecode([Remainder] string cipher)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
         }
 
@@ -37,14 +37,14 @@ namespace Atlas.Modules.Utility
             [Summary("To Do")]
             public async Task A1Z26Encode([Remainder] string text)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
 
             [Command("decode")]
             [Summary("To Do")]
             public async Task A1Z26Decode([Remainder] string cipher)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
         }
 
@@ -56,14 +56,14 @@ namespace Atlas.Modules.Utility
             [Summary("To Do")]
             public async Task CaesarEncode(int shift, [Remainder] string text)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
 
             [Command("decode")]
             [Summary("To Do")]
             public async Task CaesarDecode(int shift, [Remainder] string cipher)
             {
-                await ReplyAsync("Debug");
+                await ReplyAsync("Debug: To Do");
             }
         }
 
@@ -86,8 +86,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Base64")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Plaintext", "`" + text + "`")
-                    .AddField("Cipher Text", "`" + encodedText + "`")
+                    .AddField("Decoded", "`" + text + "`")
+                    .AddField("Encoded", "`" + encodedText + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -114,8 +114,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Base64")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Cipher Text", "`" + cipher + "`")
-                    .AddField("Plaintext", "`" + decodedCipher + "`")
+                    .AddField("Encoded", "`" + cipher + "`")
+                    .AddField("Decoded", "`" + decodedCipher + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -146,8 +146,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Binary")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Plaintext", "`" + text + "`")
-                    .AddField("Cipher Text", "`" + encodedText + "`")
+                    .AddField("Decoded", "`" + text + "`")
+                    .AddField("Encoded", "`" + encodedText + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -175,8 +175,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Binary")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Cipher Text", "`" + cipher + "`")
-                    .AddField("Plaintext", "`" + decodedCipher + "`")
+                    .AddField("Encoded", "`" + cipher + "`")
+                    .AddField("Decoded", "`" + decodedCipher + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -231,8 +231,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Hex")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Plaintext", "`" + text + "`")
-                    .AddField("Cipher Text", "`" + encodedText + "`")
+                    .AddField("Decoded", "`" + text + "`")
+                    .AddField("Encoded", "`" + encodedText + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -264,8 +264,8 @@ namespace Atlas.Modules.Utility
                         .WithName("Hex")
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
-                    .AddField("Cipher Text", "`" + cipher + "`")
-                    .AddField("Plaintext", "`" + decodedCipher + "`")
+                    .AddField("Encoded", "`" + cipher + "`")
+                    .AddField("Decoded", "`" + decodedCipher + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -275,6 +275,49 @@ namespace Atlas.Modules.Utility
                 var embed = builder.Build();
                 await ReplyAsync("", false, embed)
                     .ConfigureAwait(false);
+            }
+        }
+
+        [Group("md5")]
+        [Summary("MD5 algorithm is a widely used hash function producing a 128-bit hash value.")]
+        public class MD5 : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("Hash the specified Text using MD5.")]
+            public async Task MD5Encode([Remainder] string text)
+            {
+                using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+                {
+                    byte[] inputBytes = Encoding.ASCII.GetBytes(text);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < hashBytes.Length; i++)
+                    {
+                        sb.Append(hashBytes[i].ToString("X2"));
+                    }
+                    var hashedText = sb.ToString();
+
+                    var builder = new EmbedBuilder()
+                        .WithColor(new Color(5025616))
+                        .WithAuthor(author =>
+                        {
+                            author
+                            .WithName("MD5")
+                            .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                        })
+                        .AddField("Text", "`" + text + "`")
+                        .AddField("Hash", "`" + hashedText + "`")
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                    var embed = builder.Build();
+                    await ReplyAsync("", false, embed)
+                        .ConfigureAwait(false);
+                }
             }
         }
     }
