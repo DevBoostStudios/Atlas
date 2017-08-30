@@ -65,24 +65,6 @@ namespace Atlas.Modules.Utility
                 await ReplyAsync("", false, embed)
                     .ConfigureAwait(false);
             }
-
-            [Command("leaderboard", RunMode = RunMode.Async)]
-            [Summary("Return Leaderboard statistics for the specified Leaderboard position.")]
-            public async Task IWLeaderboard(string position, string platform)
-            {
-                var url = "https://my.callofduty.com/iw/leaderboard?platform=" + platform;
-                HtmlDocument htmlDoc = new HtmlWeb().Load(url);
-            }
-
-            [Command("status", RunMode = RunMode.Async)]
-            [Summary("Return the current server status of Call of Duty: Infinite Warfare.")]
-            public async Task IWStatus()
-            {
-                string url = "https://support.activision.com/onlineservices?gameTitle=Call+of+Duty%3A+Infinite+Warfare";
-                HtmlDocument htmlDoc = new HtmlWeb().Load(url);
-
-
-            }
         }
     }
 }
