@@ -65,7 +65,7 @@ namespace Atlas.Modules.Utility
         }
 
         [Group("base64")]
-        [Summary("Base64, also known as MIME encoding, translates binary into safe text. It is used to send attachments in email and to change small bits of unsafe high-character data into stuff that is a lot nicer for text-based system.")]
+        [Summary("Base64 is a group of similar binary-to-text encoding schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation.")]
         public class Base64 : ModuleBase<SocketCommandContext>
         {
             [Command("encode")]
