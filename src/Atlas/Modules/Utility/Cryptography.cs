@@ -282,7 +282,7 @@ namespace Atlas.Modules.Utility
         [Summary("MD5 algorithm is a widely used hash function producing a 128-bit hash value.")]
         public class MD5 : ModuleBase<SocketCommandContext>
         {
-            [Command("encode")]
+            [Command("hash")]
             [Summary("Hash the specified Text using MD5.")]
             public async Task MD5Encode([Remainder] string text)
             {
