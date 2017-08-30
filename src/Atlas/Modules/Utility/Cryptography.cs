@@ -10,63 +10,6 @@ namespace Atlas.Modules.Utility
 {
     public class Cryptography : ModuleBase<SocketCommandContext>
     {
-        [Group("morse")]
-        [Summary("To Do")]
-        public class Morse : ModuleBase<SocketCommandContext>
-        {
-            [Command("encode")]
-            [Summary("To Do")]
-            public async Task MorseEncode([Remainder] string text)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-
-            [Command("decode")]
-            [Summary("To Do")]
-            public async Task MorseDecode([Remainder] string cipher)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-        }
-
-        [Group("A1Z26")]
-        [Summary("To Do")]
-        public class A1Z26 : ModuleBase<SocketCommandContext>
-        {
-            [Command("encode")]
-            [Summary("To Do")]
-            public async Task A1Z26Encode([Remainder] string text)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-
-            [Command("decode")]
-            [Summary("To Do")]
-            public async Task A1Z26Decode([Remainder] string cipher)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-        }
-
-        [Group("caesar")]
-        [Summary("To Do")]
-        public class Caesar : ModuleBase<SocketCommandContext>
-        {
-            [Command("encode")]
-            [Summary("To Do")]
-            public async Task CaesarEncode(int shift, [Remainder] string text)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-
-            [Command("decode")]
-            [Summary("To Do")]
-            public async Task CaesarDecode(int shift, [Remainder] string cipher)
-            {
-                await ReplyAsync("Debug: To Do");
-            }
-        }
-
         [Group("base64")]
         [Summary("Base64 is a group of similar binary-to-text encoding schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation.")]
         public class Base64 : ModuleBase<SocketCommandContext>
@@ -318,6 +261,253 @@ namespace Atlas.Modules.Utility
                     await ReplyAsync("", false, embed)
                         .ConfigureAwait(false);
                 }
+            }
+        }
+
+        [Group("morse")]
+        [Summary("To Do")]
+        public class Morse : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task MorseEncode([Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task MorseDecode([Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("A1Z26")]
+        [Summary("To Do")]
+        public class A1Z26 : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task A1Z26Encode([Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task A1Z26Decode([Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("caesar")]
+        [Summary("To Do")]
+        public class Caesar : ModuleBase<SocketCommandContext>
+        { // https://www.dotnetperls.com/caesar
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task CaesarEncode(int shift, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task CaesarDecode(int shift, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("caesar")]
+        [Summary("To Do")]
+        public class KeyedCaesar : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task CaesarEncode(int shift, string key, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task CaesarDecode(int shift, string key, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("aes")]
+        [Summary("To Do")]
+        public class AES : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task AESEncode(int bit, string key, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task AESDecode(int bit, string key, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("rsa")]
+        [Summary("To Do")]
+        public class RSA : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task RSAEncode(int prime, int prime2, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task RSADecode(int prime, int prime2, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("sha")]
+        [Summary("To Do")]
+        public class SHA : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task SHAEncode([Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task SHADecode([Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("atbash")]
+        [Summary("To Do")]
+        public class Atbash : ModuleBase<SocketCommandContext>
+        { // https://www.dotnetperls.com/atbash
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task AtbashEncode([Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task AtbashDecode([Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("gronsfeld")]
+        [Summary("To Do")]
+        public class Gronsfeld : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task GronsfeldEncode(string alphabet, string key, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task GronsfeldDecode(string alphabet, string key, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("pad")]
+        [Summary("To Do")]
+        public class Pad : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task PadEncode(string pad, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task PadDecode(string pad, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("rot13")]
+        [Summary("To Do")]
+        public class Rot13 : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task Rot13Encode([Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task Rot13Decode([Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("vignere")]
+        [Summary("To Do")]
+        public class Vignere : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task VignereEncode(string key, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task VignereDecode(string key, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+        }
+
+        [Group("vignere")]
+        [Summary("To Do")]
+        public class KeyedVignere : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("To Do")]
+            public async Task VignereEncode(string alphabet, string key, [Remainder] string text)
+            {
+                await ReplyAsync("Debug: To Do");
+            }
+
+            [Command("decode")]
+            [Summary("To Do")]
+            public async Task VignereDecode(string alphabet, string key, [Remainder] string cipher)
+            {
+                await ReplyAsync("Debug: To Do");
             }
         }
     }
