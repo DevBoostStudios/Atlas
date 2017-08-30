@@ -319,12 +319,7 @@ namespace Atlas.Modules.Utility
             {
                 await ReplyAsync("Debug: To Do");
             }
-        }
 
-        [Group("caesar")]
-        [Summary("To Do")]
-        public class KeyedCaesar : ModuleBase<SocketCommandContext>
-        {
             [Command("encode")]
             [Summary("To Do")]
             public async Task CaesarEncode(int shift, string key, [Remainder] string text)
@@ -490,12 +485,7 @@ namespace Atlas.Modules.Utility
             {
                 await ReplyAsync("Debug: To Do");
             }
-        }
 
-        [Group("vignere")]
-        [Summary("To Do")]
-        public class KeyedVignere : ModuleBase<SocketCommandContext>
-        {
             [Command("encode")]
             [Summary("To Do")]
             public async Task VignereEncode(string alphabet, string key, [Remainder] string text)
