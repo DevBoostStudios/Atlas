@@ -1,11 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Utility
 {
-    public class Ciphers : ModuleBase<SocketCommandContext>
+    public class Cryptography : ModuleBase<SocketCommandContext>
     {
         [Group("morse")]
         [Summary("To Do")]
@@ -69,7 +72,7 @@ namespace Atlas.Modules.Utility
         public class Base64 : ModuleBase<SocketCommandContext>
         {
             [Command("encode")]
-            [Summary("Encodes the specified Text in Base64.")]
+            [Summary("Encode the specified Text in Base64.")]
             public async Task Base64Encode([Remainder] string text)
             {
                 var textBytes = System.Text.Encoding.UTF8.GetBytes(text);
@@ -101,7 +104,7 @@ namespace Atlas.Modules.Utility
             public async Task Base64Decode([Remainder] string cipher)
             {
                 var base64EncodedBytes = Convert.FromBase64String(cipher);
-                var decodedText = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                var decodedCipher = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
                 var builder = new EmbedBuilder()
                     .WithColor(new Color(5025616))
@@ -112,7 +115,7 @@ namespace Atlas.Modules.Utility
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
                     .AddField("Cipher Text", "`" + cipher + "`")
-                    .AddField("Plaintext", "`" + decodedText + "`")
+                    .AddField("Plaintext", "`" + decodedCipher + "`")
                     .WithFooter(footer =>
                     {
                         footer
@@ -124,5 +127,91 @@ namespace Atlas.Modules.Utility
                     .ConfigureAwait(false);
             }
         }
+
+        [Group("binary")]
+        [Summary("Binary code represents text using the binary number system's 0 and 1.")]
+        public class Binary : ModuleBase<SocketCommandContext>
+        {
+            [Command("encode")]
+            [Summary("Encode the specified Text in Binary.")]
+            public async Task BinaryEncode([Remainder] string text)
+            {
+                var encodedText = ToBinary(ConvertToByteArray(text, Encoding.UTF8));
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Binary")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Plaintext", "`" + text + "`")
+                    .AddField("Cipher Text", "`" + encodedText + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            [Command("decode")]
+            [Summary("Decode the specified Binary Ciphertext to Plaintext.")]
+            public async Task BinaryDecode([Remainder] string cipher)
+            {
+                var cipherClean = cipher.Replace(" ", "");
+                var binaryEncodedBytes = GetBytesFromBinaryString(cipherClean);
+                var decodedCipher = Encoding.ASCII.GetString(binaryEncodedBytes);
+
+                var builder = new EmbedBuilder()
+                    .WithColor(new Color(5025616))
+                    .WithAuthor(author =>
+                    {
+                        author
+                        .WithName("Binary")
+                        .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
+                    })
+                    .AddField("Cipher Text", "`" + cipher + "`")
+                    .AddField("Plaintext", "`" + decodedCipher + "`")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                        .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                        .WithIconUrl(Context.User.GetAvatarUrl());
+                    });
+                var embed = builder.Build();
+                await ReplyAsync("", false, embed)
+                    .ConfigureAwait(false);
+            }
+
+            public static byte[] ConvertToByteArray(string text, Encoding encoding)
+            {
+                return encoding.GetBytes(text);
+            }
+
+            public static String ToBinary(Byte[] data)
+            {
+                return string.Join(" ", data.Select(byt => Convert.ToString(byt, 2).PadLeft(8, '0')));
+            }
+
+            public Byte[] GetBytesFromBinaryString(String binary)
+            {
+                var list = new List<Byte>();
+
+                for (int i = 0; i < binary.Length; i += 8)
+                {
+                    String t = binary.Substring(i, 8);
+
+                    list.Add(Convert.ToByte(t, 2));
+                }
+
+                return list.ToArray();
+            }
+        }
+
     }
 }
