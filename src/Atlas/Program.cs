@@ -50,8 +50,6 @@ namespace Atlas
                 // Extra
                 .AddSingleton(_config)
                 .AddSingleton(new LiteDatabase("Atlas.db"))
-                .AddSingleton(new AudioService())
-
                 .BuildServiceProvider();
         }
 
