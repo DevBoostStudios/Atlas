@@ -112,7 +112,7 @@ namespace Atlas.Modules.Utility
                         .WithIconUrl("http://i.imgur.com/ONH5AnP.png");
                     })
                     .AddField("Cipher Text", "`" + cipher + "`")
-                    .AddField("Plain Text", "`" + decodedText + "`")
+                    .AddField("Plaintext", "`" + decodedText + "`")
                     .WithFooter(footer =>
                     {
                         footer
