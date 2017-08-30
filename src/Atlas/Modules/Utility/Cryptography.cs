@@ -288,8 +288,8 @@ namespace Atlas.Modules.Utility
             {
                 using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
                 {
-                    byte[] inputBytes = Encoding.ASCII.GetBytes(text);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+                    byte[] textBytes = Encoding.ASCII.GetBytes(text);
+                    byte[] hashBytes = md5.ComputeHash(textBytes);
 
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < hashBytes.Length; i++)
