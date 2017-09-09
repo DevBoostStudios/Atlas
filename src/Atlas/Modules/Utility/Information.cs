@@ -34,7 +34,7 @@ namespace Atlas.Modules.Administration
                 .WithUrl("https://github.com/EthanChrisp/Atlas")
                 .WithDescription("Music, Utility, and Game Discord Bot")
                 .AddInlineField("Author", "<@!" + _config["ownerID"] + ">")
-                .AddInlineField("Library", "[Discord.Net 1.0.1](https://github.com/RogueException/Discord.Net)")
+                .AddInlineField("Library", "[Discord.Net 1.0.2](https://github.com/RogueException/Discord.Net)")
                 .AddInlineField("Servers", Context.Client.Guilds.Count)
                 .AddInlineField("Uptime", Uptime())
                 .AddInlineField("Heap", HeapSize() + "MiB")

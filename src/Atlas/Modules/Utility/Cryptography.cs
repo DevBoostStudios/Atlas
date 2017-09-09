@@ -338,13 +338,13 @@ namespace Atlas.Modules.Utility
                         _shift[i] = (char)i;
                     }
 
-                    // Reverse order of capital letters
+                    // Reverse order of capitals
                     for (char c = 'A'; c <= 'Z'; c++)
                     {
                         _shift[(int)c] = (char)('Z' + 'A' - c);
                     }
 
-                    // Reverse order of lowercase letters
+                    // Reverse order of lowercases
                     for (char c = 'a'; c <= 'z'; c++)
                     {
                         _shift[(int)c] = (char)('z' + 'a' - c);
