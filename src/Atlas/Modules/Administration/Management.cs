@@ -23,10 +23,9 @@ namespace Atlas.Modules.Administration
                 {
                     author
                     .WithName("Atlas")
-                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                 })
-                .WithDescription("Shutting down...")
-                .AddField("Uptime", Uptime())
+                .WithDescription("Shutting down...\nUptime: " + Uptime())
                 .WithFooter(footer =>
                 {
                     footer
@@ -83,7 +82,7 @@ namespace Atlas.Modules.Administration
                         author
                         .WithName("Atlas")
                         .WithUrl("https://github.com/EthanChrisp/Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl("https://github.com/EthanChrisp/Atlas")
                     .WithDescription("Username changed to " + username)
@@ -124,7 +123,7 @@ namespace Atlas.Modules.Administration
                         author
                         .WithName("Atlas")
                         .WithUrl("https://github.com/EthanChrisp/Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl("https://github.com/EthanChrisp/Atlas")
                     .WithDescription("Avatar updated")
@@ -155,7 +154,7 @@ namespace Atlas.Modules.Administration
                         {
                             author
                             .WithName("Atlas")
-                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                         .WithDescription("Cleared Playing status.")
                         .WithFooter(footer =>
@@ -179,7 +178,7 @@ namespace Atlas.Modules.Administration
                         {
                             author
                             .WithName("Atlas")
-                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                            .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                         })
                         .WithDescription("Set Playing status to " + game + ".")
                         .WithFooter(footer =>
@@ -207,7 +206,7 @@ namespace Atlas.Modules.Administration
                     {
                         author
                         .WithName("Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                 })
                     .WithDescription("Status set to Online.")
                     .WithFooter(footer =>
@@ -234,7 +233,7 @@ namespace Atlas.Modules.Administration
                     {
                         author
                         .WithName("Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithDescription("Status set to Idle.")
                     .WithFooter(footer =>
@@ -261,7 +260,7 @@ namespace Atlas.Modules.Administration
                     {
                         author
                         .WithName("Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithDescription("Status set to Do Not Disturb.")
                     .WithFooter(footer =>
@@ -288,7 +287,7 @@ namespace Atlas.Modules.Administration
                     {
                         author
                         .WithName("Atlas")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithDescription("Status set to Invisible.")
                     .WithFooter(footer =>

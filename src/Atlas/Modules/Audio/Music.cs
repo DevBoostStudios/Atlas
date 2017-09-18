@@ -11,6 +11,7 @@ namespace Atlas.Modules.Audio
     {
         [RequireContext(ContextType.Guild)]
         [Command("play", RunMode = RunMode.Async)]
+        [Summary("To Do")]
         public async Task PlayAudio(string song)
         {
             // To Do: Configurable Music Channel
@@ -22,6 +23,7 @@ namespace Atlas.Modules.Audio
         [RequireOwner]
         [RequireContext(ContextType.Guild)]
         [Command("stop", RunMode = RunMode.Async)]
+        [Summary("To Do")]
         public async Task StopAudio()
         {
             await LeaveVoice(Context.Guild);

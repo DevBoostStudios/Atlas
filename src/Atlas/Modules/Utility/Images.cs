@@ -30,7 +30,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Cat")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
@@ -62,7 +62,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Dog")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
@@ -99,7 +99,7 @@ namespace Atlas.Modules.Utility
                     {
                         author
                         .WithName("Bunny")
-                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/4655f79a722eb1e0ec4afc61b2a756a6.webp"); // To Do: Get Client AvatarUrl
+                        .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
                     })
                     .WithUrl(result)
                     .WithImageUrl(result)
