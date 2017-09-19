@@ -1,35 +1,65 @@
 ﻿using Discord;
 using Discord.Audio;
 using Discord.Commands;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Audio
 {
     public class Music : ModuleBase<ICommandContext>
     {
+        private IConfiguration _config;
+
+        private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
+
         [RequireContext(ContextType.Guild)]
         [Command("play", RunMode = RunMode.Async)]
         [Summary("To Do")]
-        public async Task PlayAudio(string song)
+        public async Task PlayAudio([Remainder] string song)
         {
             // To Do: Configurable Music Channel
             // To Do: Only JoinVoice() if current connected voice channel = null
             await JoinVoice(Context.Guild, (Context.User as IVoiceState).VoiceChannel);
-            await SendAudioAsync(Context.Guild, Context.Channel, song);
+
+            if (Uri.IsWellFormedUriString(song, UriKind.Absolute))
+            {
+                await SendAudioAsync(Context.Guild, Context.Channel, song);
+            }
+            else
+            {
+                using (var client = new HttpClient())
+                {
+                    _config = BuildConfig();
+
+                    var json = await client.GetStringAsync("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&safeSearch=none&type=video&q=" + song + "&key=" + _config["googleKey"]);
+                    dynamic parse = JsonConvert.DeserializeObject(json);
+
+                    string songURL = "https://www.youtube.com/watch?v=" + parse.items[0].id.videoId;
+
+                    await SendAudioAsync(Context.Guild, Context.Channel, songURL);
+                }
+            }
         }
 
-        [RequireOwner]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
         [RequireContext(ContextType.Guild)]
         [Command("stop", RunMode = RunMode.Async)]
         [Summary("To Do")]
         public async Task StopAudio()
         {
-            await LeaveVoice(Context.Guild);
+            IAudioClient client;
+            if (ConnectedChannels.TryRemove(Context.Guild.Id, out client))
+            {
+                await client.StopAsync();
+            }
         }
-
-        private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
 
         public async Task JoinVoice(IGuild guild, IVoiceChannel target)
         {
@@ -48,15 +78,6 @@ namespace Atlas.Modules.Audio
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
                 // await Log(LogSeverity.Info, "Connected to voice on " + guild.Name + ".");
-            }
-        }
-
-        public async Task LeaveVoice(IGuild guild)
-        {
-            IAudioClient client;
-            if (ConnectedChannels.TryRemove(guild.Id, out client))
-            {
-                await client.StopAsync();
             }
         }
 
@@ -88,6 +109,14 @@ namespace Atlas.Modules.Audio
 
             audioStream.Start();
             return audioStream;
+        }
+
+        private IConfiguration BuildConfig()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json")
+                .Build();
         }
     }
 }
