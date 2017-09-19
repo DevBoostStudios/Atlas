@@ -1,22 +1,15 @@
 ﻿using Discord;
 using Discord.Audio;
 using Discord.Commands;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Audio
 {
     public class Music : ModuleBase<ICommandContext>
     {
-        private IConfiguration _config;
-
         private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
 
         [RequireContext(ContextType.Guild)]
@@ -30,21 +23,13 @@ namespace Atlas.Modules.Audio
 
             if (Uri.IsWellFormedUriString(song, UriKind.Absolute))
             {
-                await SendAudioAsync(Context.Guild, Context.Channel, song);
+                string songURL = song;
+                await SendAudioAsync(Context.Guild, Context.Channel, songURL);
             }
             else
             {
-                using (var client = new HttpClient())
-                {
-                    _config = BuildConfig();
-
-                    var json = await client.GetStringAsync("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&safeSearch=none&type=video&q=" + song + "&key=" + _config["googleKey"]);
-                    dynamic parse = JsonConvert.DeserializeObject(json);
-
-                    string songURL = "https://www.youtube.com/watch?v=" + parse.items[0].id.videoId;
-
-                    await SendAudioAsync(Context.Guild, Context.Channel, songURL);
-                }
+                string songQuery = "ytsearch1:\"" + song + "\"";
+                await SendAudioAsync(Context.Guild, Context.Channel, songQuery);
             }
         }
 
@@ -94,7 +79,7 @@ namespace Atlas.Modules.Audio
             }
         }
 
-        public Process CreateStream(string song)
+        public Process CreateStream([Remainder] string song)
         {
             Process audioStream = new Process();
 
@@ -109,14 +94,6 @@ namespace Atlas.Modules.Audio
 
             audioStream.Start();
             return audioStream;
-        }
-
-        private IConfiguration BuildConfig()
-        {
-            return new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config.json")
-                .Build();
         }
     }
 }
