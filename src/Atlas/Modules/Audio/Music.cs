@@ -37,7 +37,7 @@ namespace Atlas.Modules.Audio
         [RequireContext(ContextType.Guild)]
         [Command("stop", RunMode = RunMode.Async)]
         [Summary("To Do")]
-        public async Task StopAudio()
+        public async Task StopAudio() // To Do: This doesn't work
         {
             IAudioClient client;
             if (ConnectedChannels.TryRemove(Context.Guild.Id, out client))
@@ -62,7 +62,7 @@ namespace Atlas.Modules.Audio
 
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
-                // await Log(LogSeverity.Info, "Connected to voice on " + guild.Name + ".");
+                // await Log(LogSeverity.Info, "Connected to voice on " + guild.Name + "."); // Debug
             }
         }
 
