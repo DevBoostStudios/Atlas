@@ -115,6 +115,38 @@ namespace Atlas.Modules.Utility
             }
         }
 
+        [Command("meme")]
+        [Summary("Generates a Meme using the specified Image and Text. Seperate Top and Bottom Text with |.")]
+        public async Task Meme(string imageURL, [Remainder] string memeTextInit)
+        {
+            var memeText = memeTextInit.Replace(" ", "_");
+            var topTextInit = memeText.Split('|')[0];
+            var bottomTextInit = memeText.Split('|')[1];
+            var topText = topTextInit.Replace("|", "");
+            var bottomText = bottomTextInit.Replace("|", "");
+
+            var memeURL = "https://memegen.link/custom/" + topText + "/" + bottomText + ".jpg?alt=" + imageURL;
+
+            var builder = new EmbedBuilder()
+                .WithColor(new Color(5025616))
+                .WithAuthor(author =>
+                {
+                    author
+                    .WithName("Meme")
+                    .WithIconUrl("https://cdn.discordapp.com/avatars/320328599603249156/e1bd70b2b7cddfc60a15f9cb22403ccb.webp"); // To Do: Get Client AvatarUrl
+                })
+                .WithImageUrl(memeURL)
+                .WithFooter(footer =>
+                {
+                    footer
+                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                    .WithIconUrl(Context.User.GetAvatarUrl());
+                });
+            var embed = builder.Build();
+            await ReplyAsync("", false, embed)
+                .ConfigureAwait(false);
+        }
+
         private IConfiguration BuildConfig()
         {
             return new ConfigurationBuilder()
