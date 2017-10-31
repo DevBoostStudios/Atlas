@@ -63,7 +63,7 @@ namespace Atlas.Modules.Utility
 
                         double boostScore = parse.data.mp.weekly.all.boostingScore;
                         double booster = Math.Round(boostScore, 2);
-                        string seasonPass = (prestige == "0") ? "No" : "Yes";
+                        string seasonPass = (parse.data.engagement.seasonPass == "0") ? "No" : "Yes";
 
                         var builder = new EmbedBuilder()
                             .WithAuthor(author =>
@@ -90,9 +90,9 @@ namespace Atlas.Modules.Utility
                         .AddInlineField("Headshots", headshots)
                         .AddInlineField("Suicides", suicides)
                         .AddInlineField("Weekly Accuracy", accuracy.ToString() + "%") // To Do: Wait for COD API to support Lifetime Accuracy, this errors if player hasn't played in a week
-                        .AddInlineField("XP", xp)
+                        .AddInlineField("Rank XP", xp)
                         .AddInlineField("Booster?", booster.ToString() + "% Chance")
-                        .AddInlineField("SP Owner?", seasonPass)
+                        .AddInlineField("Season Pass?", seasonPass)
 
                         .WithFooter(footer =>
                         {
