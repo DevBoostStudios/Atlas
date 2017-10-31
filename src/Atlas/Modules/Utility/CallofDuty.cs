@@ -1,7 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
-using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Atlas.Modules.Utility
@@ -9,61 +10,91 @@ namespace Atlas.Modules.Utility
     public class CallofDuty : ModuleBase<SocketCommandContext>
     {
         [Group("IW")]
-        [Summary("Retrieve multiplayer information for Call of Duty: Infinite Warfare players.")]
+        [Summary("Retrieve information for Call of Duty: Infinite Warfare players.")]
         public class IW : ModuleBase<SocketCommandContext>
         {
             [Command("stats", RunMode = RunMode.Async)]
             [Summary("Retrieve multiplayer statistics for the specified Call of Duty: Infinite Warfare player.")]
             public async Task IWStats(string platform, [Remainder] string username)
             {
-                string url = "https://my.callofduty.com/iw/stats?platform=" + platform + "&username=" + username;
-                HtmlDocument htmlDoc = new HtmlWeb().Load(url);
-
-                // Get Prestige Value
-                HtmlNode Body = htmlDoc.DocumentNode.SelectNodes("//body[@class='with-sso-bar desktop sso-auth-known']")[0];
-                HtmlNode PageContentContainer = Body.SelectNodes("//div[@class='page-content-container']")[0];
-                HtmlNode PageContentParsys = PageContentContainer.SelectNodes("//div[@class='page-content parsys']")[0];
-                HtmlNode AtviComponentAtvi = PageContentParsys.SelectNodes("//div[@class='atvi-component atvi-content-tile ignore-id template  ']")[0];
-                HtmlNode MyCod = AtviComponentAtvi.SelectNodes("//div[@id='mycod']")[0];
-                HtmlNode App = MyCod.SelectNodes("//div[@id='app']")[0];
-                HtmlNode AppHeader = App.SelectNodes("//div[@class='app-header']")[0];
-                HtmlNode AppControls = AppHeader.SelectNodes("//div[@class='app-controls']")[0];
-                HtmlNode Account = AppControls.SelectNodes("//section[@class='account']")[0];
-                HtmlNode AccountInner = Account.SelectNodes("//div[@class='account-inner inner-wrapper']")[0];
-                HtmlNode AccountText = AccountInner.SelectNodes("//div[@class='account-text']")[0];
-                HtmlNode Level = AccountText.SelectNodes("//div[@class='level']")[0];
-                HtmlNode LevelInner = Level.SelectNodes("//div[@class='level-inner']")[0];
-                var PrestigeValue = LevelInner.SelectNodes("//span[@class='prestige value']")[0].InnerText;
-
-                var builder = new EmbedBuilder()
-                    .WithAuthor(author =>
-                    {
-                        author
-                        .WithName(username + " (" + platform + ")")
-                        .WithIconUrl("https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/iw/prestige-" + PrestigeValue + ".png");
-                    })
-                .WithColor(new Color(5025616))
-                .AddInlineField("Prestige", PrestigeValue)
-                .AddInlineField("Rank", "55")
-                .AddInlineField("Played", "12 Days")
-                .AddInlineField("Kills", "123,456")
-                .AddInlineField("Deaths", "789,123")
-                .AddInlineField("Ratio", "1.23")
-                .AddInlineField("Wins", "123")
-                .AddInlineField("Losses", "456")
-                .AddInlineField("Ratio", "1.23")
-                .AddInlineField("Score", "1,234,567")
-                .AddInlineField("SPM", "123")
-                .AddInlineField("Matches", "1234")
-                .WithFooter(footer =>
+                using (Context.Channel.EnterTypingState())
                 {
-                    footer
-                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
-                    .WithIconUrl(Context.User.GetAvatarUrl());
-                });
-                var embed = builder.Build();
-                await ReplyAsync("", false, embed)
-                    .ConfigureAwait(false);
+                    using (var client = new HttpClient())
+                    {
+                        var json = await client.GetStringAsync("https://my.callofduty.com/api/papi-client/crm/cod/v2/title/iw/platform/" + platform + "/gamer/" + username + "/profile/"); // To Do: Sanitize Platforms and Usernames if necessary (PS4 -> PSN, etc)
+                        dynamic parse = JsonConvert.DeserializeObject(json);
+
+                        long lastUpdated = parse.data.mp.lifetime.all.lastUpdated / 1000;
+                        DateTimeOffset updated = DateTimeOffset.FromUnixTimeSeconds(lastUpdated).ToLocalTime();
+                        string prestige = parse.data.mp.prestige;
+                        string rank = parse.data.mp.level;
+                        int playTime = parse.data.mp.lifetime.all.timePlayed;
+                        TimeSpan timePlayed = TimeSpan.FromSeconds(playTime);
+                        string played = string.Format("{0:D2} Days {1:D2} Hours",
+                            timePlayed.Days,
+                            timePlayed.Hours);
+                        string kills = string.Format("{0:n0}", parse.data.mp.lifetime.all.kills);
+                        string deaths = string.Format("{0:n0}", parse.data.mp.lifetime.all.deaths);
+                        double kd = parse.data.mp.lifetime.all.kdRatio;
+                        double kdr = Math.Round(kd, 2);
+                        string wins = string.Format("{0:n0}", parse.data.mp.lifetime.all.wins);
+                        string losses = string.Format("{0:n0}", parse.data.mp.lifetime.all.losses);
+                        double wl = parse.data.mp.lifetime.all.winRatio;
+                        double wlr = Math.Round(wl, 2);
+                        string score = string.Format("{0:n0}", parse.data.mp.lifetime.all.score);
+                        double scorePerMin = parse.data.mp.lifetime.all.scorePerMinute;
+                        double spm = Math.Round(scorePerMin, 0);
+                        string matches = string.Format("{0:n0}", parse.data.mp.lifetime.all.matchesPlayed);
+                        string rankIcon = (prestige == "0") ? "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/iw/level-" + rank + ".png" : "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/iw/prestige-" + prestige + ".png";
+                        string headshots = parse.data.mp.lifetime.all.headshots;
+                        string suicides = parse.data.mp.lifetime.all.suicides;
+                        double weeklyAccuracy = parse.data.mp.weekly.all.accuracy;
+                        double accuracy = Math.Round(weeklyAccuracy, 2);
+                        string xp = string.Format("{0:n0}", parse.data.mp.lifetime.all.xp);
+                        double boostScore = parse.data.mp.weekly.all.boostingScore;
+                        double booster = Math.Round(boostScore, 2);
+                        string seasonPass = (prestige == "0") ? "No" : "Yes";
+
+                        var builder = new EmbedBuilder()
+                            .WithAuthor(author =>
+                            {
+                                author
+                                .WithName(username + " (" + platform.ToUpper() + ")")
+                                .WithIconUrl(rankIcon)
+                                .WithUrl("https://my.callofduty.com/iw/recent?platform=" + platform + "&username=" + username);
+                            })
+                        .WithColor(new Color(5025616))
+                        .WithDescription("Updated: " + updated.ToString())
+                        .AddInlineField("Prestige", prestige)
+                        .AddInlineField("Rank", rank)
+                        .AddInlineField("Time Played", played)
+                        .AddInlineField("Kills", kills)
+                        .AddInlineField("Deaths", deaths)
+                        .AddInlineField("K/D Ratio", kdr.ToString())
+                        .AddInlineField("Wins", wins)
+                        .AddInlineField("Losses", losses)
+                        .AddInlineField("W/L Ratio", wlr.ToString())
+                        .AddInlineField("Score", score)
+                        .AddInlineField("SPM", spm.ToString())
+                        .AddInlineField("Matches", matches)
+                        .AddInlineField("Headshots", headshots)
+                        .AddInlineField("Suicides", suicides)
+                        .AddInlineField("Weekly Accuracy", accuracy.ToString() + "%") // To Do: Wait for COD API to support Lifetime Accuracy, this errors if player hasn't played in a week
+                        .AddInlineField("XP", xp)
+                        .AddInlineField("Booster?", booster.ToString() + "% Chance")
+                        .AddInlineField("SP Owner?", seasonPass)
+
+                        .WithFooter(footer =>
+                        {
+                            footer
+                            .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                            .WithIconUrl(Context.User.GetAvatarUrl());
+                        });
+                        var embed = builder.Build();
+                        await ReplyAsync("", false, embed)
+                            .ConfigureAwait(false);
+                    }
+                }
             }
         }
     }
