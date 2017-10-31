@@ -25,32 +25,42 @@ namespace Atlas.Modules.Utility
                         dynamic parse = JsonConvert.DeserializeObject(json);
 
                         long lastUpdated = parse.data.mp.lifetime.all.lastUpdated / 1000;
-                        DateTimeOffset updated = DateTimeOffset.FromUnixTimeSeconds(lastUpdated).ToLocalTime();
+                        DateTimeOffset updatedInit = DateTimeOffset.FromUnixTimeSeconds(lastUpdated).ToLocalTime();
+                        string updated = updatedInit.ToString().Split('-')[0];
+
                         string prestige = parse.data.mp.prestige;
                         string rank = parse.data.mp.level;
+
                         int playTime = parse.data.mp.lifetime.all.timePlayed;
                         TimeSpan timePlayed = TimeSpan.FromSeconds(playTime);
                         string played = string.Format("{0:D2} Days {1:D2} Hours",
                             timePlayed.Days,
                             timePlayed.Hours);
+
                         string kills = string.Format("{0:n0}", parse.data.mp.lifetime.all.kills);
                         string deaths = string.Format("{0:n0}", parse.data.mp.lifetime.all.deaths);
                         double kd = parse.data.mp.lifetime.all.kdRatio;
                         double kdr = Math.Round(kd, 2);
+
                         string wins = string.Format("{0:n0}", parse.data.mp.lifetime.all.wins);
                         string losses = string.Format("{0:n0}", parse.data.mp.lifetime.all.losses);
                         double wl = parse.data.mp.lifetime.all.winRatio;
                         double wlr = Math.Round(wl, 2);
+
                         string score = string.Format("{0:n0}", parse.data.mp.lifetime.all.score);
                         double scorePerMin = parse.data.mp.lifetime.all.scorePerMinute;
                         double spm = Math.Round(scorePerMin, 0);
+
                         string matches = string.Format("{0:n0}", parse.data.mp.lifetime.all.matchesPlayed);
                         string rankIcon = (prestige == "0") ? "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/iw/level-" + rank + ".png" : "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/iw/prestige-" + prestige + ".png";
                         string headshots = parse.data.mp.lifetime.all.headshots;
                         string suicides = parse.data.mp.lifetime.all.suicides;
+
                         double weeklyAccuracy = parse.data.mp.weekly.all.accuracy;
                         double accuracy = Math.Round(weeklyAccuracy, 2);
+
                         string xp = string.Format("{0:n0}", parse.data.mp.lifetime.all.xp);
+
                         double boostScore = parse.data.mp.weekly.all.boostingScore;
                         double booster = Math.Round(boostScore, 2);
                         string seasonPass = (prestige == "0") ? "No" : "Yes";
@@ -64,7 +74,7 @@ namespace Atlas.Modules.Utility
                                 .WithUrl("https://my.callofduty.com/iw/recent?platform=" + platform + "&username=" + username);
                             })
                         .WithColor(new Color(5025616))
-                        .WithDescription("Updated: " + updated.ToString())
+                        .WithDescription("Updated: " + updated)
                         .AddInlineField("Prestige", prestige)
                         .AddInlineField("Rank", rank)
                         .AddInlineField("Time Played", played)
