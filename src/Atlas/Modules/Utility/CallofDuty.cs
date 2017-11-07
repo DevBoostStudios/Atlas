@@ -9,6 +9,69 @@ namespace Atlas.Modules.Utility
 {
     public class CallofDuty : ModuleBase<SocketCommandContext>
     {
+        [Group("CWL")]
+        [Summary("Retrieve information for Call of Duty World League.")]
+        public class CWL : ModuleBase<SocketCommandContext>
+        {
+            [Command("events")]
+            [Summary("Return the upcoming Call of Duty World League event.")]
+            public async Task CWLEvents()
+            {
+                using (Context.Channel.EnterTypingState())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var json = await client.GetStringAsync("https://www.callofduty.com/esports/data/v1/content/event-pages/listings");
+                        dynamic parse = JsonConvert.DeserializeObject(json); // To Do: Catch and report to user if no upcoming events are available
+
+                        string cwlLogo = "https://i.imgur.com/H6L5XB6.png";
+                        string eventName = parse.data.data.upcoming[0].title + " - " + parse.data.data.upcoming[0].subtitle;
+                        string eventURL = "https://www.callofduty.com" + parse.data.data.upcoming[0].link;
+                        string upcomingEvents = "0"; // To Do: Finish this
+                        string eventImageURL = "https://www.callofduty.com" + parse.data.data.upcoming[0].logoThumbnail;
+
+                        long startDate = parse.data.data.upcoming[0].startTime / 1000;
+                        DateTimeOffset eventStartInit = DateTimeOffset.FromUnixTimeSeconds(startDate).ToLocalTime();
+                        string eventStart = eventStartInit.ToString().Split('-')[0];
+
+                        long endDate = parse.data.data.upcoming[0].endTime / 1000;
+                        DateTimeOffset eventEndInit = DateTimeOffset.FromUnixTimeSeconds(endDate).ToLocalTime();
+                        string eventEnd = eventEndInit.ToString().Split('-')[0];
+
+                        var builder = new EmbedBuilder()
+                            .WithAuthor(author =>
+                            {
+                                author
+                                .WithName(eventName)
+                                .WithIconUrl(cwlLogo)
+                                .WithUrl(eventURL);
+                            })
+                            .WithColor(new Color(5025616))
+                            .WithDescription("See all " + upcomingEvents + " upcoming Call of Duty eSports events **[here](https://www.callofduty.com/esports/events)**.")
+                            .WithThumbnailUrl(eventImageURL)
+                            .AddInlineField("Event Start", eventStart)
+                            .AddInlineField("Event End", eventEnd)
+                            .WithFooter(footer =>
+                            {
+                                footer
+                                .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                                .WithIconUrl(Context.User.GetAvatarUrl());
+                            });
+                        var embed = builder.Build();
+                        await ReplyAsync("", false, embed)
+                            .ConfigureAwait(false);
+                    }
+                }
+            }
+        }
+
+        [Group("WWII")]
+        [Summary("Retrieve information for Call of Duty: Infinite Warfare players.")]
+        public class WWII : ModuleBase<SocketCommandContext>
+        {
+            // To Do
+        }
+
         [Group("IW")]
         [Summary("Retrieve information for Call of Duty: Infinite Warfare players.")]
         public class IW : ModuleBase<SocketCommandContext>
@@ -97,7 +160,6 @@ namespace Atlas.Modules.Utility
                             .AddInlineField("Rank XP", xp)
                             .AddInlineField("Booster?", booster.ToString() + "% Chance")
                             .AddInlineField("Season Pass?", seasonPass)
-
                             .WithFooter(footer =>
                             {
                                 footer
@@ -184,6 +246,13 @@ namespace Atlas.Modules.Utility
                     }
                 }
             }
+        }
+
+        [Group("BO3")]
+        [Summary("Retrieve information for Call of Duty: Black Ops III players.")]
+        public class BO3 : ModuleBase<SocketCommandContext>
+        {
+            // To Do
         }
     }
 }
