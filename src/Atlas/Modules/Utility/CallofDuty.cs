@@ -47,7 +47,7 @@ namespace Atlas.Modules.Utility
                                 .WithUrl(eventURL);
                             })
                             .WithColor(new Color(5025616))
-                            .WithDescription("See all " + upcomingEvents + " upcoming Call of Duty eSports events **[here](https://www.callofduty.com/esports/events)**.")
+                            .WithDescription("See all " + upcomingEvents + " upcoming Call of Duty World League events **[here](https://www.callofduty.com/esports/events)**.")
                             .WithThumbnailUrl(eventImageURL)
                             .AddInlineField("Event Start", eventStart)
                             .AddInlineField("Event End", eventEnd)
