@@ -106,18 +106,22 @@ namespace Atlas.Modules.Utility
                             string losses = string.Format("{0:n0}", parse.data.mp.lifetime.all.losses);
                             //double wl = parse.data.mp.lifetime.all.winRatio;
                             //double wlr = Math.Round(wl, 2);
+                            double wlrWins = Convert.ToDouble(wins);
+                            double wlrLosses = Convert.ToDouble(losses);
+                            double wlrTempInit = wlrWins / wlrLosses;
+                            string wlrTemp = Math.Round(wlrTempInit, 2).ToString();
 
                             string score = string.Format("{0:n0}", parse.data.mp.lifetime.all.score);
-                            //double scorePerMin = parse.data.mp.lifetime.all.scorePerMinute;
-                            //double spm = Math.Round(scorePerMin, 0);
+                            double scorePerMin = parse.data.mp.weekly.all.scorePerMinute;
+                            double spm = Math.Round(scorePerMin, 0);
 
                             string matches = string.Format("{0:n0}", parse.data.mp.lifetime.all.matchesPlayed);
                             string rankIcon = (prestige == "0") ? "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/wwii/level-" + rank + ".png" : "https://my.callofduty.com/content/dam/atvi/callofduty/mycod/common/player-icons/wwii/prestige-" + prestige + ".png";
                             string headshots = parse.data.mp.lifetime.all.headshots;
                             string suicides = parse.data.mp.lifetime.all.suicides;
 
-                            double weeklyAccuracy = parse.data.mp.weekly.all.accuracy;
-                            double accuracy = Math.Round(weeklyAccuracy, 2);
+                            double lifetimeAccuracy = parse.data.mp.lifetime.all.accuracy;
+                            double accuracy = Math.Round(lifetimeAccuracy, 2);
 
                             //string xp = string.Format("{0:n0}", parse.data.mp.lifetime.all.xp);
 
@@ -143,13 +147,13 @@ namespace Atlas.Modules.Utility
                             .AddInlineField("K/D Ratio", kdr.ToString()) // As of 11/8 this is broken in API
                             .AddInlineField("Wins", wins)
                             .AddInlineField("Losses", losses)
-                            //.AddInlineField("W/L Ratio", wlr.ToString()) // As of 11/8 this isn't in API
+                            .AddInlineField("W/L Ratio", wlrTemp) // As of 11/8 this isn't in API
                             .AddInlineField("Score", score)
-                            //.AddInlineField("SPM", spm.ToString()) // As of 11/8 this isn't in API
+                            .AddInlineField("Weekly SPM", spm.ToString()) // As of 11/10 lifetime isn't in API
                             .AddInlineField("Matches", matches)
                             .AddInlineField("Headshots", headshots)
                             .AddInlineField("Suicides", suicides)
-                            .AddInlineField("Weekly Accuracy", accuracy.ToString() + "%") // To Do: Wait for COD API to support Lifetime Accuracy, this errors if player hasn't played in a week
+                            .AddInlineField("Accuracy", accuracy.ToString() + "%")
                             //.AddInlineField("Rank XP", xp) // As of 11/8 this isn't in API
                             //.AddInlineField("Booster?", booster.ToString() + "% Chance") // As of 11/8 this isn't in API
                             //.AddInlineField("Season Pass?", seasonPass) // As of 11/8 this isn't in API
