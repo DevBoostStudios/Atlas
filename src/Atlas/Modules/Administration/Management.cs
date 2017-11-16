@@ -10,7 +10,7 @@ namespace Atlas.Modules.Administration
 {
     public class Management : ModuleBase<SocketCommandContext>
     {
-        private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
+        private static string Uptime() => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\:hh\:mm\:ss");
 
         [RequireOwner]
         [Command("shutdown")]
