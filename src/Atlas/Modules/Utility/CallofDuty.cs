@@ -14,7 +14,7 @@ namespace Atlas.Modules.Utility
         public class CWL : ModuleBase<SocketCommandContext>
         {
             [Command("events")]
-            [Summary("Return the upcoming Call of Duty World League event.")]
+            [Summary("Retrieve the upcoming Call of Duty World League event.")]
             public async Task CWLEvents()
             {
                 using (Context.Channel.EnterTypingState())
@@ -130,6 +130,7 @@ namespace Atlas.Modules.Utility
                             //string seasonPass = (parse.data.engagement.seasonPass == "0") ? "No" : "Yes";
 
                             var builder = new EmbedBuilder()
+                                .WithColor(new Color(5025616))
                                 .WithAuthor(author =>
                                 {
                                     author
@@ -137,32 +138,31 @@ namespace Atlas.Modules.Utility
                                     .WithIconUrl(rankIcon)
                                     .WithUrl("https://my.callofduty.com/iw/recent?platform=" + platform + "&username=" + username);
                                 })
-                            .WithColor(new Color(5025616))
-                            //.WithDescription("Updated: " + updated) // As of 11/8 this isn't in API
-                            .AddInlineField("Prestige", prestige)
-                            .AddInlineField("Rank", rank)
-                            .AddInlineField("Time Played", played)
-                            .AddInlineField("Kills", kills)
-                            .AddInlineField("Deaths", deaths)
-                            .AddInlineField("K/D Ratio", kdr.ToString()) // As of 11/8 this is broken in API
-                            .AddInlineField("Wins", wins)
-                            .AddInlineField("Losses", losses)
-                            .AddInlineField("W/L Ratio", wlrTemp) // As of 11/8 this isn't in API
-                            .AddInlineField("Score", score)
-                            .AddInlineField("Weekly SPM", spm.ToString()) // As of 11/10 lifetime isn't in API
-                            .AddInlineField("Matches", matches)
-                            .AddInlineField("Headshots", headshots)
-                            .AddInlineField("Suicides", suicides)
-                            .AddInlineField("Accuracy", accuracy.ToString() + "%")
-                            //.AddInlineField("Rank XP", xp) // As of 11/8 this isn't in API
-                            //.AddInlineField("Booster?", booster.ToString() + "% Chance") // As of 11/8 this isn't in API
-                            //.AddInlineField("Season Pass?", seasonPass) // As of 11/8 this isn't in API
-                            .WithFooter(footer =>
-                            {
-                                footer
-                                .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
-                                .WithIconUrl(Context.User.GetAvatarUrl());
-                            });
+                                //.WithDescription("Updated: " + updated) // As of 11/8 this isn't in API
+                                .AddInlineField("Prestige", prestige)
+                                .AddInlineField("Rank", rank)
+                                .AddInlineField("Time Played", played)
+                                .AddInlineField("Kills", kills)
+                                .AddInlineField("Deaths", deaths)
+                                .AddInlineField("K/D Ratio", kdr.ToString()) // As of 11/8 this is broken in API
+                                .AddInlineField("Wins", wins)
+                                .AddInlineField("Losses", losses)
+                                .AddInlineField("W/L Ratio", wlrTemp) // As of 11/8 this isn't in API
+                                .AddInlineField("Score", score)
+                                .AddInlineField("Weekly SPM", spm.ToString()) // As of 11/10 lifetime isn't in API
+                                .AddInlineField("Matches", matches)
+                                .AddInlineField("Headshots", headshots)
+                                .AddInlineField("Suicides", suicides)
+                                .AddInlineField("Accuracy", accuracy.ToString() + "%")
+                                //.AddInlineField("Rank XP", xp) // As of 11/8 this isn't in API
+                                //.AddInlineField("Booster?", booster.ToString() + "% Chance") // As of 11/8 this isn't in API
+                                //.AddInlineField("Season Pass?", seasonPass) // As of 11/8 this isn't in API
+                                .WithFooter(footer =>
+                                {
+                                    footer
+                                    .WithText(Context.User.ToString() + " | " + DateTime.Now.ToString())
+                                    .WithIconUrl(Context.User.GetAvatarUrl());
+                                });
                             var embed = builder.Build();
                             await ReplyAsync("", false, embed)
                                 .ConfigureAwait(false);
