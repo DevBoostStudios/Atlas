@@ -7,10 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Modules\Games\Magic8Ball.cs" />
+    <Compile Remove="Modules\Games\Magic8BallService.cs" />
+    <Compile Remove="Modules\Games\TriviaGame.cs" />
+    <Compile Remove="Modules\Games\TriviaModuleBase.cs" />
+    <Compile Remove="Modules\Games\TriviaService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Discord.Net.WebSocket" Version="1.0.2" />
     <PackageReference Include="Discord.Net.Commands" Version="1.0.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />
-    <PackageReference Include="LiteDB" Version="3.1.4" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.6.6" />
+    <PackageReference Include="LiteDB" Version="4.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
     <!-- Remove this line if using another configuration host: -->
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
@@ -22,7 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Temp\Audio\" />
-    <Folder Include="Modules\Games\" />
     <Folder Include="Modules\Kronorium\" />
     <Folder Include="Modules\Video\" />
     <Folder Include="Modules\Reddit\" />

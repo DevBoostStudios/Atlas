@@ -31,7 +31,6 @@ namespace Atlas.Modules.Utility
                     string avatar = parse.avatar;
                     string lastUpdated = parse.lastUpdated;
 
-                    string 
                     string duoKD = parse.stats[0].stats[0].displayValue;
                     string duoKDPerct = parse.stats[0].stats[0].percentile;
                     string duoWL = parse.stats[0].stats[1].displayValue;
