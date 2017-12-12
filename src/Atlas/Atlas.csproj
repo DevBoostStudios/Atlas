@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Remove="Modules\Games\Magic8Ball.cs" />
     <Compile Remove="Modules\Games\Magic8BallService.cs" />
+    <Compile Remove="Modules\Games\RockPaperScissors.cs" />
     <Compile Remove="Modules\Games\TriviaGame.cs" />
     <Compile Remove="Modules\Games\TriviaModuleBase.cs" />
     <Compile Remove="Modules\Games\TriviaService.cs" />
@@ -30,8 +31,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Temp\Audio\" />
-    <Folder Include="Modules\Kronorium\" />
-    <Folder Include="Modules\Video\" />
+    <Folder Include="Modules\Games\" />
+    <Folder Include="Modules\Prestige\" />
     <Folder Include="Modules\Reddit\" />
   </ItemGroup>
 
